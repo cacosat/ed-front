@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased flex justify-center bg-background-light dark:bg-background-dark`}
+        className={`${inter.className} antialiased dark:text-background-light flex justify-center bg-background-light dark:bg-background-dark`}
       >
         <ThemeProvider
           attribute="class"
