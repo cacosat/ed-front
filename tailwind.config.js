@@ -9,9 +9,15 @@ module.exports = {
   theme: {
   	extend: {
   		colors: {
-  			background: 'var(--background)',
+  			background: {
+				'light': '#EFEFF0',
+				'dark': '#18191A',
+			},
   			foreground: 'var(--foreground)',
 			accent: '#E8490C',
+			button: {
+				'soft': '#FDBA741A'
+			},
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
