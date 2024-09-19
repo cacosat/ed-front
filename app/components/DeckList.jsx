@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 export default function DeckList({props, children}){
 
     return(
-        <DeckListEntry />
+        <>
+            <DeckListEntry />
+            <DeckListEntry />
+            <DeckListEntry />
+        </>
     )
 }
 
@@ -13,7 +17,7 @@ function DeckListEntry({ deckInfo }){
     // Prop deck info should contain: title, description, tags.
 
     return (
-        <div className="flex justify-between items-center p-4 gap-16">
+        <div className="flex justify-between items-center p-4 gap-16 border-b border-divider-light dark:border-divider-dark">
             {/* General Container */}
             <div className="flex flex-col gap-3">
                 <p className="font-medium text-base text-text-primary-light dark:text-text-primary-dark">

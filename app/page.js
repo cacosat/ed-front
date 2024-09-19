@@ -19,7 +19,7 @@ export default function Home() {
           <h1 className="font-medium text-xl">Decks / Library</h1>
           <FilterButton />
         </div>
-        <section className="border-y border-red-600 ">
+        <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
           <DeckList />
 

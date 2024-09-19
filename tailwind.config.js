@@ -15,7 +15,10 @@ module.exports = {
 				'card-dark': '#242528',
 			},
   			foreground: 'var(--foreground)',
-			accent: '#E8490C',
+			divider: {
+				'light': '#d4d4d4', // neutral-300
+				'dark': '#404040', // neutral-700
+			},
 			button: {
 				'soft-dark': '#FDBA741A', // 1A = 10% opacity
 				'soft-light': '#FDBA7440' // 40 = 25% opacity
