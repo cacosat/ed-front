@@ -12,11 +12,13 @@ module.exports = {
   			background: {
 				'light': '#EFEFF0',
 				'dark': '#18191A',
+				'card-dark': '#242528',
 			},
   			foreground: 'var(--foreground)',
 			accent: '#E8490C',
 			button: {
-				'soft': '#FDBA741A'
+				'soft-dark': '#FDBA741A', // 1A = 10% opacity
+				'soft-light': '#FDBA7440' // 40 = 25% opacity
 			},
   		},
   		borderRadius: {
