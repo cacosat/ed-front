@@ -20,6 +20,12 @@ module.exports = {
 				'soft-dark': '#FDBA741A', // 1A = 10% opacity
 				'soft-light': '#FDBA7440' // 40 = 25% opacity
 			},
+			text: {
+				'primary-dark': '#e5e5e5', // neutral-200
+				'secondary-dark': '#a3a3a3', // neutral-400
+				'primary-light': '#171717', // neutral-900
+				'secondary-light': '#737373', // neutral-500
+			}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
