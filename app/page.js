@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import CustomButton from "./components/CustomButton.jsx"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +16,10 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-12">
       <section className="pt-12 flex flex-col gap-8">
-        <div class="flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <h1 className="font-medium text-xl">Decks / Library</h1>
           <FilterButton />
+          <CustomButton>Test</CustomButton>
         </div>
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
