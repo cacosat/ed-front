@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { SlidersHorizontal } from "lucide-react";
+import { Play, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CustomButton from "./components/CustomButton.jsx"
 import {
@@ -19,7 +19,6 @@ export default function Home() {
         <div className="flex justify-between items-center">
           <h1 className="font-medium text-xl">Decks / Library</h1>
           <FilterButton />
-          <CustomButton>Test</CustomButton>
         </div>
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
@@ -38,8 +37,12 @@ function FilterButton({props}) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="bg-button-soft-light dark:bg-button-soft-dark px-4 py-2 rounded-lg">
-        <SlidersHorizontal className="w-4 text-orange-600" />
+      <DropdownMenuTrigger asChild>
+        <CustomButton
+          variant="soft"
+          text={false}
+          frontIcon={<SlidersHorizontal className="w-4 text-orange-600" />}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="">
         <DropdownMenuLabel>Filters</DropdownMenuLabel>

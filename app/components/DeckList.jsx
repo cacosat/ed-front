@@ -1,6 +1,11 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import CustomButton from "./CustomButton.jsx"
+import { 
+    Play,
+    Trash2
+ } from "lucide-react";
 
 export default function DeckList({props, children}){
 
@@ -38,10 +43,24 @@ function DeckListEntry({ deckInfo }){
                 <div className="flex flex-col gap-2">
                     {/* button container */}
                     <div className="flex gap-2">
-                        <Button>Del</Button>
-                        <Button>Edit</Button>
+                        <CustomButton 
+                            variant="soft"
+                            frontIcon={<Trash2 size={16} strokeWidth={2} />}
+                            text={false}
+                        >
+                        </CustomButton>
+                        <CustomButton 
+                            variant="soft"
+                        >
+                            Edit
+                        </CustomButton>
                     </div>
-                    <Button className="">Play</Button>
+                    <CustomButton 
+                        variant={'solid'} 
+                        frontIcon={<Play size={16} strokeWidth={2} />}
+                    >
+                        Test
+                    </CustomButton>
                 </div>
             </div>
         </div>
