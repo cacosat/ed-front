@@ -5,7 +5,9 @@ import CustomButton from "./CustomButton.jsx"
 import { 
     Play,
     Trash2,
-    Pencil
+    Pencil,
+    FileQuestion,
+    Heart
  } from "lucide-react";
 
 export default function DeckList({props, children}){
@@ -21,6 +23,7 @@ export default function DeckList({props, children}){
 
 function DeckListEntry({ deckInfo }){
     // Prop deck info should contain: title, description, tags.
+    const numOfQuestions = 10;
 
     return (
         <div className="flex justify-between items-center p-4 gap-16 border-b border-divider-light dark:border-divider-dark">
@@ -37,9 +40,16 @@ function DeckListEntry({ deckInfo }){
                     <Badge variant="outline" className='w-fit text-xxs font-normal'>Tag</Badge>
                 </div>
             </div>
-            <div className="flex flex-col gap-4">
-                <div className="flex gap-2 justify-end">
+            <div className="flex flex-col gap-4 items-end justify-center">
+                <div className="flex gap-4 justify-end items-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
                     {/* icons info */}
+                    <div className="flex gap-[2px] items-center">
+                        <FileQuestion className="" size={16} strokeWidth={2} />
+                        {numOfQuestions}
+                    </div>
+                    <div className="flex gap-[2px] items-center">
+                        <Heart className="" size={16} strokeWidth={2} />
+                    </div>                    
                 </div>
                 <div className="flex flex-col gap-2">
                     {/* button container */}
