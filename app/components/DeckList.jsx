@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import CustomButton from "./CustomButton.jsx"
 import { 
     Play,
-    Trash2
+    Trash2,
+    Pencil
  } from "lucide-react";
 
 export default function DeckList({props, children}){
@@ -51,8 +52,9 @@ function DeckListEntry({ deckInfo }){
                         </CustomButton>
                         <CustomButton 
                             variant="soft"
+                            frontIcon={<Pencil size={16} strokeWidth={2} />}
+                            text={false}
                         >
-                            Edit
                         </CustomButton>
                     </div>
                     <CustomButton 
