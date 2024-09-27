@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ModeToggle } from './modeToggle';
 import CustomButton from './CustomButton';
@@ -9,20 +10,26 @@ export default function Nav(){
 
     return (
         <div className='w-full py-2 flex items-center justify-between'>
-            <h1 className='font-bold text-2xl'>Edtech logo</h1>
+            <Link href={'/'} className='font-bold text-2xl'>
+                <h1>Edtech logo</h1>
+            </Link>
             <div className='flex gap-2 text-base'>
-                <CustomButton
-                    variant="link"
-                    frontIcon={<Library className='w-4' />}
-                >
-                    <p>Library</p>
-                </CustomButton>
-                <CustomButton
-                    variant="link"
-                    frontIcon={<Plus className='w-4' />}
-                >
-                    <p>New Deck</p>
-                </CustomButton>
+                <Link href={'/'}>
+                    <CustomButton
+                        variant="link"
+                        frontIcon={<Library className='w-4' />}
+                    >
+                        <p>Library</p>
+                    </CustomButton>
+                </Link>
+                <Link href={'/create'}>
+                    <CustomButton
+                        variant="link"
+                        frontIcon={<Plus className='w-4' />}
+                    >
+                        <p>New Deck</p>
+                    </CustomButton>
+                </Link>
                 <ModeToggle />
                 <Avatar>
                     <AvatarImage src="avatar_placeholder.webp" />

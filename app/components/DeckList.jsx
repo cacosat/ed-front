@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link.js";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import CustomButton from "./CustomButton.jsx"
@@ -60,12 +61,14 @@ function DeckListEntry({ deckInfo }){
                             text={false}
                         >
                         </CustomButton>
-                        <CustomButton 
-                            variant="soft"
-                            frontIcon={<Pencil size={16} strokeWidth={2} />}
-                            text={false}
-                        >
-                        </CustomButton>
+                        <Link href={'/deck/1/edit'}>
+                            <CustomButton
+                                variant="soft"
+                                frontIcon={<Pencil size={16} strokeWidth={2} />}
+                                text={false}
+                            >
+                            </CustomButton>
+                        </Link>
                     </div>
                     <CustomButton 
                         variant={'solid'} 
