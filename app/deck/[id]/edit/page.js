@@ -53,12 +53,14 @@ function Tabs() {
 
         switch(activeTab){
             case 'first':
-                tab = <div>
-                    {/* map over the deck data questions to generate questions */}
-                    <EditQuestion deck={data} />
-                    <EditQuestion deck={data} />
-                    <EditQuestion deck={data} />
-                </div>
+                tab = (
+                    <div>
+                        {/* map over the deck data questions to generate questions */}
+                        <EditQuestion deck={data} />
+                        <EditQuestion deck={data} />
+                        <EditQuestion deck={data} />
+                    </div>
+                )
                 break;
             case 'second':
                 tab = <div>
@@ -66,14 +68,18 @@ function Tabs() {
                 </div>
                 break;
             case 'third':
-                tab = <div>
-                    third
-                </div>
+                tab = (
+                    <div>
+                        third
+                    </div>
+                )
                 break;
             default:
-                tab = <div>
-                    error
-                </div>
+                tab = (
+                    <div>
+                        error
+                    </div>
+                )
         }
 
         return tab
@@ -109,7 +115,7 @@ function Tabs() {
                 <span
                     className="absolute bottom-0 h-0.5 bg-accent transition-all duration-300 ease-in-out"
                     style={indicatorStyle}
-                    />
+                />
             </div>
             <div>
                 <div className="w-full px-8 py-8">
