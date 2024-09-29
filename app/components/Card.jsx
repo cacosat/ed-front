@@ -2,11 +2,12 @@ import React from "react";
 import { 
     CircleCheckBig,
     Flag,
-    CircleX
+    CircleX,
+    Info
  } from "lucide-react";
 import CustomButton from "./CustomButton";
 
-export default function Card({
+export function Card({
     extraClasses,
     status = 'neutral', // determines card status ('acitve', 'error', 'neutral')
     // data
@@ -59,5 +60,34 @@ export default function Card({
                 </div>
             </div>
         </div>
+    )
+}
+
+export function BaseCard({ className, children }){
+
+    return (
+        <div className={`p-4 bg-background-card-light dark:bg-background-card-dark 
+        text-text-primary-light dark:text-text-primary-dark dark:text-text-primary-second 
+        rounded-lg 
+        border border-stroke-light-light dark:border-stroke-dark-light
+        ${className}`}>
+            {children}
+        </div>
+    )
+}
+
+export function InfoCard({ className, children }){
+
+    return (
+        <BaseCard className={`flex gap-4 ${className}`}>
+            <CustomButton
+                variant="softDisabled"
+                text={false}
+                frontIcon={<Info size={16} />}
+            ></CustomButton>
+            <div className="text-text-secondary-light dark:text-text-secondary-dark font-light">
+                {children}
+            </div>
+        </BaseCard>
     )
 }

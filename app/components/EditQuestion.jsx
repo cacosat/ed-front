@@ -6,7 +6,7 @@ import {
     Trash2
  } from "lucide-react";
 import CustomButton from "./CustomButton";
-import Card from "./Card";
+import {Card} from "./Card";
 import { Badge } from "@/components/ui/badge";
 
 export default function EditQuestion({ props }){

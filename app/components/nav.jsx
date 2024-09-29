@@ -22,7 +22,7 @@ export default function Nav(){
                         <p>Library</p>
                     </CustomButton>
                 </Link>
-                <Link href={'/create'}>
+                <Link href={'/deck/create'}>
                     <CustomButton
                         variant="link"
                         frontIcon={<Plus className='w-4' />}
