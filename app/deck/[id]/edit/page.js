@@ -39,67 +39,6 @@ export default function DeckEdit({ params, data, children }) {
     }
     const [active, setActive] = useState(Object.keys(tabs)[0]);
 
-    function renderTabContent(activeTab) {
-        /*
-        fetchDeck to get the user cards within the deck and render the tabs accordingly.
-        Tabs will be correspondig to the "units" or "lessons" defined for the topic in the 
-        construction of the deck, each containing a handful of questions.
-
-        Map over the sections from the data fetched on the decks api endpoint for constructing
-        the sections and then, inside of them, map over the questions each section has 
-        producing the components for the specific questions.
-
-        The flow is: 
-        deck creation -> 'syllabus' like preview -> Save deck (button) -> cards generation
-        */
-        
-        let tab = null;
-        const data = {}; // object containing deck data
-
-        // for (let tab in tabs) {
-        //     tab 
-        // }
-
-        switch(activeTab){
-            case 'first':
-                tab = (
-                    <div>
-                        {/* map over the deck data questions to generate questions */}
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                        <EditQuestion deck={data} />
-                    </div>
-                )
-                break;
-            case 'second':
-                tab = <div>
-                    second
-                </div>
-                break;
-            case 'third':
-                tab = (
-                    <div>
-                        third
-                    </div>
-                )
-                break;
-            default:
-                tab = (
-                    <div>
-                        error
-                    </div>
-                )
-        }
-
-        return tab
-    }
-
     function handleAddQuestion(numOfQuestionsAdded) {
         /*
         Handling these means to Add a question to the deck, this will be allowed
@@ -128,7 +67,7 @@ export default function DeckEdit({ params, data, children }) {
                         Add Question
                     </CustomButton>
                 </div>
-                {renderTabContent(active)}
+                {tabs[active]}
             </Tabs>
         </div>
     )
