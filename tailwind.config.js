@@ -20,7 +20,9 @@ module.exports = {
 			},
 			stroke: {
 				'dark-light': '#FFFFFF0D', // 0D = 5% opacity
-				'light-light': '#0000000D'
+				'light-light': '#0000000D',
+				'dark-gray': '#61646B',
+				'light-gray': '#a3a3a3',
 			},
   			foreground: 'var(--foreground)',
 			divider: {
