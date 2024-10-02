@@ -93,60 +93,65 @@ export function DifficultyCard({
     active = false, 
     difficulty,
     description,
+    onClick,
 }){
-    const baseClasses = `p-8 bg-background-card-light dark:bg-background-card-dark text-text-primary-light dark:text-text-primary-second rounded-lg`
-    const activeClasses = 'border-2 border-accent'
+    const baseClasses = `p-8 bg-background-card-light dark:bg-background-card-dark text-text-primary-light dark:text-text-primary-second rounded-lg cursor-pointer`
+    const borderClasses = active 
+        ? 'border-2 border-accent' 
+        : 'border-2 border-transparent'
+    const transitionClasses = 'transition-colors'
+
     const difficultyIcon = {
         Easy: (
             active ? (
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.59961 38.4V36M19.1996 38.4V28.8" stroke="#E8490C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.59961 38.4V36M19.1996 38.4V28.8" stroke="#E8490C" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             ) : (
                 <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.93262 38.4V36M19.5326 38.4V28.8" stroke="#61646B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.93262 38.4V36M19.5326 38.4V28.8" stroke="#61646B" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             )
         ),
         Medium: (
             active ? (
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.59961 38.4V36M19.1996 38.4V28.8M28.7996 38.4V19.2" stroke="#E8490C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.59961 38.4V36M19.1996 38.4V28.8M28.7996 38.4V19.2" stroke="#E8490C" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             ) : (
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.59961 38.4V36M19.1996 38.4V28.8M28.7996 38.4V19.2" stroke="#61646B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.59961 38.4V36M19.1996 38.4V28.8M28.7996 38.4V19.2" stroke="#61646B" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             )
         ),
         Hard: (
             active ? (
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.59961 38.4001V36.0001M19.1996 38.4001V28.8001M28.7996 38.4001V19.2001M38.3996 38.4001V9.6001" stroke="#E8490C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.59961 38.4001V36.0001M19.1996 38.4001V28.8001M28.7996 38.4001V19.2001M38.3996 38.4001V9.6001" stroke="#E8490C" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             ) : (
                 <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.2656 38.4001V36.0001M19.8656 38.4001V28.8001M29.4656 38.4001V19.2001M39.0656 38.4001V9.6001" stroke="#61646B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.2656 38.4001V36.0001M19.8656 38.4001V28.8001M29.4656 38.4001V19.2001M39.0656 38.4001V9.6001" stroke="#61646B" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             )
         )
     }
 
     return (
-        <div className={`${extraClasses} ${baseClasses} ${active ? activeClasses : ''}`}
+        <div 
+            className={`${extraClasses} ${baseClasses} ${borderClasses} ${transitionClasses}`}
+            onClick={onClick}
         >
             <div className="flex flex-col items-center gap-2 text-sm">
-                <div className={`w-full flex justify-end`}>
-                    {active ? (
-                        <CircleCheckBig size={18} strokeWidth={2} className="text-accent"/>
-                    ) : (null)}
+                <div className={`w-full flex justify-end transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-0'}`}>
+                    <CircleCheckBig size={18} strokeWidth={2} className="text-accent"/>
                 </div>
                 {difficultyIcon[difficulty]}
                 <div className="flex flex-col items-center gap-1">
-                    <div className={`text-base text-text-primary-light dark:text-text-primary-dark ${active ? '!text-accent ' : ''}`}>
+                    <div className={`text-base transition-colors duration-300 ${active ? 'text-accent' : 'text-text-primary-light dark:text-text-primary-dark'}`}>
                         {difficulty}
                     </div>
-                    <div className={`text-center text-text-secondary-light dark:text-text-secondary-dark text-xs font-light ${ active ? '!text-accent-light' : ''}`}>
+                    <div className={`text-center text-xs font-light transition-colors duration-300 ${active ? 'text-accent-light' : 'text-text-secondary-light dark:text-text-secondary-dark'}`}>
                         <p>{description}</p>
                     </div>
                 </div>

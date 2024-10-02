@@ -7,8 +7,9 @@ import Tabs from "@/app/components/Tabs";
 import CustomButton from "@/app/components/CustomButton";
 
 export default function DeckCreate({ children }) {
-    const[keyWords, setKeyWords] = useState('');
-    const[description, setDescription] = useState('');
+    const [keyWords, setKeyWords] = useState('');
+    const [description, setDescription] = useState('');
+    const [activeDifficulty, setActiveDifficulty] = useState('medium');
 
     const handleKeyWordsChange = (e) => {
         console.log(keyWords)
@@ -20,6 +21,10 @@ export default function DeckCreate({ children }) {
         setDescription(e.target.value)
     }
 
+    const handleDifficultyChange = (difficulty) => {
+        console.log(difficulty);
+        setActiveDifficulty(difficulty);
+    }
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('form submitted', event.target)
@@ -39,7 +44,7 @@ export default function DeckCreate({ children }) {
                                     <label htmlFor="deckDescription" className="text-base text-text-primary-light dark:text-text-primary-dark">What do you want to learn about?<span className="text-accent">*</span></label>
                                     <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Here you should provide the main focus and context to be considered for the cards in the deck.</p>
                                 </div>
-                                <div class="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2">
                                     <textarea
                                         id="deckDescription"
                                         className={`placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark placeholder:italic placeholder:font-light 
@@ -72,22 +77,25 @@ export default function DeckCreate({ children }) {
                                     <label htmlFor="deckDescription" className="text-base text-text-primary-light dark:text-text-primary-dark">Select a difficulty</label>
                                     <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">This will determine how hard is your deck.</p>
                                 </div>
-                                <div class="flex flex-col sm:flex-row gap-8">
+                                <div className="flex flex-col sm:flex-row gap-8">
                                     <DifficultyCard
                                         extraClasses={'w-full'}
-                                        active={false}
+                                        active={activeDifficulty === 'easy'}
+                                        onClick={() => handleDifficultyChange('easy')}
                                         difficulty={'Easy'}
                                         description={'For Beginners'}
                                     />
                                     <DifficultyCard
                                         extraClasses={'w-full'}
-                                        active={true}
+                                        active={activeDifficulty === 'medium'}
+                                        onClick={() => handleDifficultyChange('medium')}
                                         difficulty={'Medium'}
                                         description={'Recommended'}
                                     />
                                     <DifficultyCard
                                         extraClasses={'w-full'}
-                                        active={false}
+                                        active={activeDifficulty === 'hard'}
+                                        onClick={() => handleDifficultyChange('hard')}
                                         difficulty={'Hard'}
                                         description={'Test your knowledge'}
                                     />
