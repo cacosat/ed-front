@@ -2,11 +2,24 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import { InfoCard } from "@/app/components/Card";
+import { InfoCard, DifficultyCard } from "@/app/components/Card";
 import Tabs from "@/app/components/Tabs";
 import CustomButton from "@/app/components/CustomButton";
 
 export default function DeckCreate({ children }) {
+    const[keyWords, setKeyWords] = useState('');
+    const[description, setDescription] = useState('');
+
+    const handleKeyWordsChange = (e) => {
+        console.log(keyWords)
+        setKeyWords(e.target.value)
+    }
+
+    const handleDescriptionChange = (e) => {
+        console.log(description)
+        setDescription(e.target.value)
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('form submitted', event.target)
@@ -21,32 +34,65 @@ export default function DeckCreate({ children }) {
                 <div>
                     <form onSubmit={handleSubmit}>
                         <div className="flex flex-col gap-16">
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="deckDescription" className="text-base text-text-primary-light dark:text-text-primary-dark">What do you want to learn about?<span className="text-accent">*</span></label>
-                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">This will be the main information provided to the model as part of the request and context to generate the cards for the deck.</p>
+                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">Here you should provide the main focus and context to be considered for the cards in the deck.</p>
                                 </div>
-                                <textarea 
-                                    id="deckDescription" 
-                                    className="placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark placeholder:italic placeholder:font-light text-sm border border-stroke-light-gray dark:border-stroke-dark-gray focus:outline-none focus:border-accent dark:focus:border-accent bg-background-light focus:bg-background-card-light dark:bg-background-dark dark:focus:bg-background-card-dark  rounded-lg p-2 transition-all" 
-                                    placeholder="I'd like to create a deck about the evolution of the Homo lineage, basically how we got from early human ancestors to modern Homo sapiens. I'm interested in exploring topics like different species in the Homo genus, how they lived, their tools, and how they interacted with the environment..."
-                                    rows={'6'}
-                                ></textarea>
+                                <div class="flex flex-col gap-2">
+                                    <textarea
+                                        id="deckDescription"
+                                        className={`placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark placeholder:italic placeholder:font-light 
+                                        text-sm border ${description ? 'border-accent' : 'border-stroke-light-gray dark:border-stroke-dark-gray'} outline-none focus:border-accent dark:focus:border-accent ${description ? 'bg-background-card-light dark:bg-background-card-dark' : 'bg-background-light dark:bg-background-dark'} dark:focus:bg-background-card-dark rounded-lg p-2 transition-all`}
+                                        placeholder="I'd like to create a deck about the evolution of the Homo lineage, basically how we got from early human ancestors to modern Homo sapiens. I'm interested in exploring topics like different species in the Homo genus, how they lived, their tools, and how they interacted with the environment..."
+                                        value={description}
+                                        onChange={handleDescriptionChange}
+                                        rows={'6'}
+                                    ></textarea>
+                                    <p className="self-end text-text-secondary-light dark:text-text-secondary-dark text-xs font-extralight">{`${description.length}/3000`}</p>
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-2 mt-4">
+                            <div className="flex flex-col gap-4 mt-4">
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="deckDescription" className="text-base text-text-primary-light dark:text-text-primary-dark">Key Words<span className="text-accent">*</span></label>
-                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">These will be used to guide the generation of the decks.</p>
+                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">These will be used to guide the generation of the deck.</p>
                                 </div>
                                 <input 
                                     id="deckKeyWords" 
-                                    className="placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark placeholder:italic placeholder:font-light text-sm border border-stroke-light-gray dark:border-stroke-dark-gray focus:outline-none focus:border-accent dark:focus:border-accent bg-background-light focus:bg-background-card-light dark:bg-background-dark dark:focus:bg-background-card-dark  rounded-lg p-2 transition-all" 
+                                    className={`placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark placeholder:italic placeholder:font-light 
+                                        text-sm border ${keyWords ? 'border-accent' : 'border-stroke-light-gray dark:border-stroke-dark-gray'} outline-none focus:border-accent dark:focus:border-accent ${keyWords ? 'bg-background-card-light dark:bg-background-card-dark' : 'bg-background-light dark:bg-background-dark'} dark:focus:bg-background-card-dark rounded-lg p-2 transition-all`}
                                     rows="4" 
+                                    value={keyWords}
+                                    onChange={handleKeyWordsChange}
                                     placeholder="Homo sapiens, evolution, philosophy..."
                                 ></input>
                             </div>
-                            <input />
-                            <input />
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-2">
+                                    <label htmlFor="deckDescription" className="text-base text-text-primary-light dark:text-text-primary-dark">Select a difficulty</label>
+                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">This will determine how hard is your deck.</p>
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-8">
+                                    <DifficultyCard
+                                        extraClasses={'w-full'}
+                                        active={false}
+                                        difficulty={'Easy'}
+                                        description={'For Beginners'}
+                                    />
+                                    <DifficultyCard
+                                        extraClasses={'w-full'}
+                                        active={true}
+                                        difficulty={'Medium'}
+                                        description={'Recommended'}
+                                    />
+                                    <DifficultyCard
+                                        extraClasses={'w-full'}
+                                        active={false}
+                                        difficulty={'Hard'}
+                                        description={'Test your knowledge'}
+                                    />
+                                </div>
+                            </div>
                             <CustomButton className={'w-fit'}>
                                 Submit
                             </CustomButton>
@@ -65,7 +111,14 @@ export default function DeckCreate({ children }) {
 
     return (
         <div>
-            
+            <div className="flex flex-col gap-4 py-12">
+                <p className="font-bold text-2xl text-text-primary-light dark:text-text-primary-dark">
+                    Create your own deck
+                </p>
+                <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui dolore ipsa ipsam assumenda tempore quisquam ratione perferendis odio, quibusdam incidunt repellendus vero vel laudantium, nemo asperiores delectus obcaecati esse! Facere!
+                </p>
+            </div>
             <Tabs
                 tabsObj={tabs}
                 active={activeTab}

@@ -6,7 +6,7 @@ import {
     Trash2
  } from "lucide-react";
 import CustomButton from "./CustomButton";
-import {Card} from "./Card";
+import {AnswerCard} from "./Card";
 import { Badge } from "@/components/ui/badge";
 
 export default function EditQuestion({ props }){
@@ -67,10 +67,34 @@ export default function EditQuestion({ props }){
                         The following are the choices that will be presented with the question, and their explanation.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-8">
-                        <Card extraClasses='' />
-                        <Card extraClasses='' />
-                        <Card extraClasses='' />
-                        <Card extraClasses='' />
+                        <AnswerCard 
+                            extraClasses='' 
+                            status='active'
+                            type='mcq'
+                            answer='Answer'
+                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
+                        />
+                        <AnswerCard 
+                            extraClasses='' 
+                            status='neutral'
+                            type='mcq'
+                            answer='Answer'
+                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
+                        />
+                        <AnswerCard 
+                            extraClasses='' 
+                            status='neutral'
+                            type='mcq'
+                            answer='Answer'
+                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
+                        />
+                        <AnswerCard 
+                            extraClasses='' 
+                            status='neutral'
+                            type='mcq'
+                            answer='Answer'
+                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
+                        />
                     </div>
                 </div>
             </div>

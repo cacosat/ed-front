@@ -11,7 +11,7 @@ export default function Nav(){
     return (
         <div className='w-full py-2 flex items-center justify-between'>
             <Link href={'/'} className='font-bold text-2xl'>
-                <h1>Edtech logo</h1>
+                <h1>Logo</h1>
             </Link>
             <div className='flex gap-2 text-base'>
                 <Link href={'/'}>
