@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import DeckHubHeader from "@/app/components/DeckHubHeader";
+import DeckHeader from "@/app/components/DeckHeader";
 import EditQuestion from "@/app/components/EditQuestion";
 import CustomButton from "@/app/components/CustomButton";
 import Tabs from '@/app/components/Tabs.jsx'
@@ -51,7 +51,11 @@ export default function DeckEdit({ params, data, children }) {
 
     return (
         <div>
-            <DeckHubHeader />
+            <DeckHeader 
+                title={'🌐 Deck Title'}
+                description={'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui dolore ipsa ipsam assumenda tempore quisquam ratione perferendis odio, quibusdam incidunt repellendus vero vel laudantium, nemo asperiores delectus obcaecati esse! Facere!'}
+                className={'md:max-w-[75%]'}
+            />
             <Tabs 
                 tabsObj={tabs} 
                 active={active}
