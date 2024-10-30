@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Play, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import CustomButton from "./components/CustomButton.jsx"
+import CustomButton from "../components/CustomButton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import DeckList from "./components/DeckList";
+import DeckList from "../components/DeckList"
 
 export default function Home() {
   return (

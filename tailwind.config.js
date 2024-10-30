@@ -12,10 +12,10 @@ module.exports = {
 			accent: '#E8490C',
 			'accent-light': '#FAB79E',
   			background: {
-				'light': '#EFEFF0',
+				'light': '#e9e9e9',
 				'dark': '#18191A',
 				'card-dark': '#242528',
-				'card-light': '#E9E9E9',
+				'card-light': '#EFEFF0',
 				'accent-soft': '#E8490C0D'
 			},
 			stroke: {
