@@ -30,10 +30,15 @@ export default function Login() {
     
     const passVisibilityToggle = () => setPassVisible(!passVisible);
 
-    const handleSubmit = (event) => {
+    const handleLogin = (event) => {
         event.preventDefault();
         console.log('form submitted', event.target)
-        // handle submit of deck creation form
+        // handle login form
+    }
+
+    const handleSignup = (event) => {
+        event.preventDefault();
+        // handle signup form
     }
 
     const tabs = {
@@ -98,6 +103,17 @@ export default function Login() {
                             label="Password"
                             value={password}
                             placeholder="********"
+                            msg={
+                                <div className="flex flex-col gap-1">
+                                    <p>Password must contain:</p>
+                                    <ul className="list-disc pl-4">
+                                        <li>At least 8 characters</li>
+                                        <li>One uppercase letter</li>
+                                        <li>One number</li>
+                                        <li>One special character</li>
+                                    </ul>
+                                </div>
+                            }
                             onChange={handlePassword}
                             required={true}
                         />
