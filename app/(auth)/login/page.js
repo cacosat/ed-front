@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { 
     Eye,
     EyeOff
@@ -8,6 +8,8 @@ import {
 import FormInput from "@/app/components/FormInput";
 import Tabs from "@/app/components/Tabs"
 import CustomButton from "@/app/components/CustomButton";
+import { AuthContext } from "@/app/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [activeTab, setActiveTab] = useState('Sign up');
@@ -15,6 +17,8 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passVisible, setPassVisible] = useState(false);
+    const { login, register } = useContext(AuthContext)
+    const router = useRouter()
     
     const handleUsername = (e) => {
         setUsername(e.target.value)
@@ -30,15 +34,24 @@ export default function Login() {
     
     const passVisibilityToggle = () => setPassVisible(!passVisible);
 
-    const handleLogin = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('form submitted', event.target)
-        // handle login form
-    }
 
-    const handleSignup = (event) => {
-        event.preventDefault();
-        // handle signup form
+        console.log('Submit initiated: ', event);
+        console.log(`Current email: ${email}; and password: ${password}`)
+
+        return;
+
+        try {
+            if (activeTab === 'Sign up') {
+                const registerData = await register(email, password)
+            } else if (activeTab === 'Log in') {
+                const loginData = await login(email, password)
+            }
+            router.push('/');
+        } catch (error) {
+            console.error('Failed form submit for login/signup: ', error)
+        }
     }
 
     const tabs = {
