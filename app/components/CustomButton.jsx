@@ -2,6 +2,7 @@ import React from "react";
 
 export default function CustomButton({
     variant = "solid", 
+    type,
     frontIcon, 
     text = true,
     endIcon,
@@ -21,7 +22,7 @@ export default function CustomButton({
     };
 
     return (
-        <button onClick={onClick} className={`${baseClasses} ${variantClasses[variant]}`}>
+        <button onClick={onClick} type={type} className={`${baseClasses} ${variantClasses[variant]}`}>
             {frontIcon && (
                 <div className="">
                     {frontIcon}

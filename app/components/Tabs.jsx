@@ -5,6 +5,7 @@ export default function Tabs({
     tabsObj, 
     active,
     setActive,
+    className,
     children
  }) {
 
@@ -25,7 +26,7 @@ export default function Tabs({
     }, [active]);
 
     return (
-        <div>
+        <div className={`${className}`}>
             <div className="relative">
                 <div className="flex">
                     {tabs.map((tab, index) => (

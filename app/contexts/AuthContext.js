@@ -11,10 +11,11 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     const login = async (email, password) => {
         try {
-            console.log('Attempting to log in with email:', email);
+            console.log(`Attempting to log in with email: ${email}; at ${API_BASE_URL}`);
 
             setAccessToken(null);
             setUser(null);
@@ -30,26 +31,26 @@ export function AuthProvider({ children }) {
 
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(`Login failed` || error.message);
+                throw new Error(error.message);
             }
 
             const data = await response.json();
             setAccessToken(data.accessToken);
             setUser(data.user);
 
-            console.log('Login successful for user:', data.user);
+            console.log('Login successful for user:', data);
 
             return data;
 
         } catch (error) {
-            console.error('Login error: ', error);
+            console.error('Error in the login request: ', error);
             return error;
         }
     }
 
     const register = async (email, password) => {
         try {
-            console.log('Attempting to register with email:', email);
+            console.log(`Attempting to register with email: ${email}; at ${API_BASE_URL}`);
 
             const response = await fetch(`${API_BASE_URL}/auth/register`, {
                 method: 'POST', 
@@ -70,7 +71,7 @@ export function AuthProvider({ children }) {
             setAccessToken(data.accessToken);
             setUser(data.user);
 
-            console.log('Registration successful for user:', data.user);
+            console.log('Registration successful for user:', data);
 
             return data
         } catch (error) {

@@ -8,6 +8,7 @@ import {
 import FormInput from "@/app/components/FormInput";
 import Tabs from "@/app/components/Tabs"
 import CustomButton from "@/app/components/CustomButton";
+import { InfoCard } from "@/app/components/Card";
 import { AuthContext } from "@/app/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
@@ -17,8 +18,10 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passVisible, setPassVisible] = useState(false);
-    const { login, register } = useContext(AuthContext)
-    const router = useRouter()
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const { login, register } = useContext(AuthContext);
+    const router = useRouter();
     
     const handleUsername = (e) => {
         setUsername(e.target.value)
@@ -31,24 +34,37 @@ export default function Login() {
     const handlePassword = (e) => {
         setPassword(e.target.value)
     }
-    
-    const passVisibilityToggle = () => setPassVisible(!passVisible);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setError(null);
+        setLoading(true);
 
         console.log('Submit initiated: ', event);
-        console.log(`Current email: ${email}; and password: ${password}`)
-
-        return;
 
         try {
             if (activeTab === 'Sign up') {
                 const registerData = await register(email, password)
+                    if (!registerData.ok && !registerData.accessToken) {
+                        console.log(`Error during registration -> `, registerData)
+                        setError(registerData);
+                        setLoading(false);
+                    } else {
+                        // console.log(`Register completed: `, registerData)
+                        setLoading(false)
+                        router.push('/')
+                    }
             } else if (activeTab === 'Log in') {
                 const loginData = await login(email, password)
+                    if (!loginData.ok && !loginData.accessToken) {
+                        console.log(`Error during login -> `, loginData)
+                        setError(loginData);
+                        setLoading(false);
+                    } else {
+                        setLoading(false)
+                        router.push('/')
+                    }
             }
-            router.push('/');
         } catch (error) {
             console.error('Failed form submit for login/signup: ', error)
         }
@@ -59,31 +75,25 @@ export default function Login() {
             <form onSubmit={handleSubmit}>
                 <div className="py-12 flex flex-col gap-12">
                     <FormInput
-                        type='text'
-                        label="Username or email"
-                        value={username}
+                        type='email'
+                        label="Email"
+                        value={email}
                         placeholder="example@gmail.com"
-                        onChange={handleUsername}
+                        onChange={handleEmail}
                         required={true}
                     />
-                    <div className="flex gap-2 items-end">
-                        <FormInput
-                            type={passVisible ? 'text' : 'password'}
-                            label="Password"
-                            value={password}
-                            placeholder="********"
-                            onChange={handlePassword}
-                            required={true}
-                        />
-                        <CustomButton
-                            variant="soft"
-                            frontIcon={passVisible ? <Eye size={16} /> : <EyeOff size={16} />}
-                            text={false}
-                            onClick={passVisibilityToggle}
-                            className={'h-fit'}
-                        ></CustomButton>
-                    </div>
+                    <FormInput
+                        type={passVisible ? 'text' : 'password'}
+                        label="Password"
+                        value={password}
+                        passwordVisibility={true}
+                        placeholder="********"
+                        onChange={handlePassword}
+                        required={true}
+                    />
+                    {/* Add loading behavior */}
                     <CustomButton
+                        type='submit'
                         className={'w-full'}
                     >
                         Log In
@@ -95,14 +105,6 @@ export default function Login() {
             <form onSubmit={handleSubmit}>
                 <div className="py-12 flex flex-col gap-12">
                     <FormInput
-                        type='text'
-                        label="Username"
-                        value={username}
-                        placeholder="user123"
-                        onChange={handleUsername}
-                        required={true}
-                    />
-                    <FormInput
                         type='email'
                         label="Email"
                         value={email}
@@ -110,35 +112,29 @@ export default function Login() {
                         onChange={handleEmail}
                         required={true}
                     />
-                    <div className="flex gap-2 items-end">
-                        <FormInput
-                            type={passVisible ? 'text' : 'password'}
-                            label="Password"
-                            value={password}
-                            placeholder="********"
-                            msg={
-                                <div className="flex flex-col gap-1">
-                                    <p>Password must contain:</p>
-                                    <ul className="list-disc pl-4">
-                                        <li>At least 8 characters</li>
-                                        <li>One uppercase letter</li>
-                                        <li>One number</li>
-                                        <li>One special character</li>
-                                    </ul>
-                                </div>
-                            }
-                            onChange={handlePassword}
-                            required={true}
-                        />
-                        <CustomButton
-                            variant="soft"
-                            frontIcon={passVisible ? <Eye size={16} /> : <EyeOff size={16} />}
-                            text={false}
-                            onClick={passVisibilityToggle}
-                            className={'h-fit'}
-                        ></CustomButton>
-                    </div>
+                    <FormInput
+                        type={passVisible ? 'text' : 'password'}
+                        label="Password"
+                        value={password}
+                        passwordVisibility={true}
+                        placeholder="********"
+                        msg={
+                            <div className="flex flex-col gap-1">
+                                <p>Password must contain:</p>
+                                <ul className="list-disc pl-4">
+                                    <li>At least 8 characters</li>
+                                    <li>One uppercase letter</li>
+                                    <li>One number</li>
+                                    <li>One special character</li>
+                                </ul>
+                            </div>
+                        }
+                        onChange={handlePassword}
+                        required={true}
+                    />
+                    {/* Add loading behavior */}
                     <CustomButton
+                        type='submit'
                         className={'w-full'}
                     >
                         Sign Up
@@ -154,8 +150,16 @@ export default function Login() {
                 tabsObj={tabs}
                 active={activeTab}
                 setActive={setActiveTab}
+                className={'w-full max-w-[512px]'}
             >
-                {tabs[activeTab]}
+                <div className="mt-8">
+                    {error && (
+                        <InfoCard className={'text-sm'}>
+                            {error.message}
+                        </InfoCard>
+                    )}
+                    {tabs[activeTab]}
+                </div>
             </Tabs>
         </div>
     )

@@ -81,7 +81,7 @@ export function InfoCard({ className, children }){
                 text={false}
                 frontIcon={<Info size={16} />}
             ></CustomButton>
-            <div className="text-text-secondary-light dark:text-text-secondary-dark font-light">
+            <div className="text-text-secondary-light dark:text-text-secondary-dark font-light flex items-center">
                 {children}
             </div>
         </BaseCard>
