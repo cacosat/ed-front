@@ -3,7 +3,8 @@
 import { useContext, useEffect, useState } from "react"
 import { 
     Eye,
-    EyeOff
+    EyeOff,
+    LoaderCircle
  } from "lucide-react";
 import FormInput from "@/app/components/FormInput";
 import Tabs from "@/app/components/Tabs"
@@ -96,7 +97,7 @@ export default function Login() {
                         type='submit'
                         className={'w-full'}
                     >
-                        Log In
+                        {loading ? (<LoaderCircle size={16} className='animate-spin' />) : ('Log In')}
                     </CustomButton>
                 </div>
             </form>
@@ -137,7 +138,7 @@ export default function Login() {
                         type='submit'
                         className={'w-full'}
                     >
-                        Sign Up
+                        {loading ? (<LoaderCircle size={16} className='animate-spin' />) : ('Sign Up')}
                     </CustomButton>
                 </div>
             </form>
