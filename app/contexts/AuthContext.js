@@ -44,7 +44,7 @@ export function AuthProvider({ children }) {
 
         } catch (error) {
             console.error('Error in the login request: ', error);
-            return error;
+            throw error;
         }
     }
 
@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
             return data
         } catch (error) {
             console.error('Registration error: ', error);
-            return error;
+            throw error;
         }
     }
 
@@ -101,7 +101,7 @@ export function AuthProvider({ children }) {
             return data
         } catch (error) {
             console.error('Logout error: ', error);
-            return error;
+            throw error;
         }
     }
 

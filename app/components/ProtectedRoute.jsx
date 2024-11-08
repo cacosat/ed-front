@@ -16,7 +16,7 @@ export default function ProtectedRoute({ children }) {
     }, [user, router])
 
     if (!user) {
-        return <LoaderCircle className='animate-spin' />
+        return <LoaderCircle className='h-[100vh] animate-spin' />
     }
 
     return children
