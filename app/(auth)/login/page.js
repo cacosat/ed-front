@@ -96,6 +96,7 @@ export default function Login() {
                     <CustomButton
                         type='submit'
                         className={'w-full'}
+                        disabled={!email || !password}
                     >
                         {loading ? (<LoaderCircle size={16} className='animate-spin' />) : ('Log In')}
                     </CustomButton>
@@ -137,6 +138,7 @@ export default function Login() {
                     <CustomButton
                         type='submit'
                         className={'w-full'}
+                        disabled={!email || !password}
                     >
                         {loading ? (<LoaderCircle size={16} className='animate-spin' />) : ('Sign Up')}
                     </CustomButton>

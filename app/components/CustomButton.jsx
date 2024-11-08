@@ -8,6 +8,7 @@ export default function CustomButton({
     endIcon,
     className, 
     onClick,
+    disabled = false,
     children
 }) {
     const baseClasses = `${className} min-h-[40px] px-4 py-2 gap-2 rounded-lg flex items-center justify-center  transition-all active:scale-[0.97]`;
@@ -18,11 +19,17 @@ export default function CustomButton({
         solid: "bg-button-solid hover:bg-button-solid-hover text-text-primary-dark shadow-[inset_0_2px_5px_rgba(0255,0255,0255,0.3),inset_0_-2px_5px_rgba(0,0,0,0.2)] ",
         link: "text-text-primary-light dark:text-text-primary-dark hover:text-accent dark:hover:text-accent font-medium",
         // Unstyled variants (Ai suggestion):
-        outline: "border border-red-500 text-red-500 hover:bg-red-500 hover:text-white ",
+        outline: "border border-stroke-light-gray dark:border-stroke-dark-gray text-text-secondary-light dark:text-text-secondary-dark active:scale-[1]",
     };
+    const actualVariant = disabled ? 'outline' : variant;
 
     return (
-        <button onClick={onClick} type={type} className={`${baseClasses} ${variantClasses[variant]}`}>
+        <button 
+            onClick={onClick} 
+            type={type} 
+            className={`${baseClasses} ${variantClasses[actualVariant]}`} 
+            disabled={disabled}
+        >
             {frontIcon && (
                 <div className="">
                     {frontIcon}
