@@ -21,8 +21,8 @@ export default function Login() {
     const [passVisible, setPassVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    
-    const { login, register } = useContext(AuthContext);
+
+    const { login, register, logout, authFetch } = useContext(AuthContext);
     const router = useRouter();
     
     const handleUsername = (e) => {
