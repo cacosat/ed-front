@@ -30,7 +30,7 @@ export default function Home() {
     const fetchUserDecks = async () => {
       try {
         const response = await authFetch(`${API_BASE_URL}/decks/`); // options isn't specified because default method is GET
-        console.log(response)
+
         if (!response.ok) {
           throw new Error('Failed the request to the GET /api/decks/ endpoint')
         }
