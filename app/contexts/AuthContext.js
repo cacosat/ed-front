@@ -82,6 +82,8 @@ export function AuthProvider({ children }) {
                 throw error
             }
         }
+
+        return response;
     }
 
     const login = async (email, password) => {
@@ -109,7 +111,8 @@ export function AuthProvider({ children }) {
             setAccessToken(data.accessToken);
             setUser(data.user);
 
-            console.log('Login successful for user:', data);
+            console.log('Login successful');
+            // console.log('Login successful for user:', data);
 
             return data;
 
@@ -142,7 +145,8 @@ export function AuthProvider({ children }) {
             setAccessToken(data.accessToken);
             setUser(data.user);
 
-            console.log('Registration successful for user:', data);
+            console.log('Registration successful');
+            // console.log('Registration successful for user:', data);
 
             return data
         } catch (error) {
