@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { Play, SlidersHorizontal } from "lucide-react";
+import { LoaderCircle, Play, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../components/CustomButton";
 import {
@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import DeckList from "../components/DeckList"
+import { DeckList, DeckListEntry } from "../components/DeckList";
 import {
   useContext,
   useEffect,
@@ -36,7 +36,7 @@ export default function Home() {
         }
 
         const data = await response.json();
-        setDecks(data);
+        setDecks(data.decks);
         console.log('Data in decks: ', data);
       } catch (error) {
         console.error('Failed fetching user decks data: ', error)
@@ -58,7 +58,25 @@ export default function Home() {
         </div>
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
-          <DeckList />
+          {decks ? ( 
+            decks.map((deck) => {
+              return <DeckListEntry key={deck.id} deckInfo={deck} />
+            })
+          ) : (
+            <div>
+              {/* <DeckList /> */}
+              {loading && ( 
+                <div className="flex flex-col items-center justify-center h-[50vh]">
+                  <div className="flex flex-col items-center gap-4">
+                    <LoaderCircle size={24} className='text-accent animate-spin' />
+                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                      Loading Decks...
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
         </section>
       </section>
