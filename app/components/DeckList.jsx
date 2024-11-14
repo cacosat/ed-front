@@ -62,7 +62,7 @@ export function DeckListEntry({ deckInfo }){
                             text={false}
                         >
                         </CustomButton>
-                        <Link href={'/deck/1/edit'}>
+                        <Link href={`/deck/${deckInfo.id}/edit`}>
                             <CustomButton
                                 variant="soft"
                                 frontIcon={<Pencil size={16} strokeWidth={2} />}
