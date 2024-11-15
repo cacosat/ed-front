@@ -2,9 +2,11 @@ import React from "react";
 import { 
     FileQuestion,
     Heart
- } from "lucide-react";
+} from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton"
 
-export default function DeckHeader({ title, description, className }){
+
+export default function DeckHeader({ title, description, loading, className }){
     const numOfQuestions = 10;
 
     return (
@@ -19,12 +21,24 @@ export default function DeckHeader({ title, description, className }){
                     <Heart className="" size={16} strokeWidth={2} />
                 </div>    
             </div>
-            <div className={`flex flex-col gap-2`}>
+            <div className={`flex flex-col gap-4`}>
                 <p className="font-bold text-2xl text-text-primary-light dark:text-text-primary-dark">
-                    {title}
+                    {loading ? (
+                        <Skeleton className="w-[75%] h-[32px] rounded-full" />
+                    ) : (
+                        title
+                    )}
                 </p>
                 <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                    {description}
+                    {loading ? (
+                        <div className="flex flex-col gap-2">
+                            <Skeleton className="w-[100%] h-[14px] rounded-full" />
+                            <Skeleton className="w-[100%] h-[14px] rounded-full" />
+                            <Skeleton className="w-[90%] h-[14px] rounded-full" />
+                        </div>
+                    ) : (
+                        description
+                    )}
                 </p>
             </div>
         </div>

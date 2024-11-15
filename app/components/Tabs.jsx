@@ -34,9 +34,9 @@ export default function Tabs({
                             key={tab}
                             ref={tabRefs.current[index]}
                             onClick={() => setActive(tab)}
-                            className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ease-in-out ${
-                                active === tab ? activeTabClasses : unactiveTabClasses
-                            }`}
+                            className={`px-4 py-2 max-w-[25ch] text-sm font-medium transition-colors duration-300 ease-in-out
+                                ${active === tab ? activeTabClasses : unactiveTabClasses}
+                            `} // max-w-[25ch]
                         >
                             {tabs[index]}
                         </button>

@@ -11,54 +11,77 @@ import { Sparkles } from "lucide-react";
 export default function DeckEdit({ params, children }) {
     // params has the id of the deck passed through the url
     // data is the data on the deck, the sections and correpsonding questions
-    const [deck, setDeck] = useState({});
+    const [deckInfo, setDeckInfo] = useState({});
+    const [modules, setModules] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { authFetch } = useContext(AuthContext)
+    const { authFetch } = useContext(AuthContext);
     const deckId = params.id;
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     useEffect(() => {
-        const fetchDeck = async () => {
+        const fetchDeckModules = async () => {
             try {
-                const response = await authFetch(`${API_BASE_URL}/decks/${deckId}`)
+                const modulesResponse = await authFetch(`${API_BASE_URL}/decks/${deckId}`)
                 
-                if (!response.ok) {
+                if (!modulesResponse.ok) {
                     throw new Error(`Failed to fetch deck (id: ${deckId}) from GET /api/decks/:deckId endpoint`);
                 }
-
-                const deck = await response.json();
-                setDeck(deck);
-                console.log(`Deck retrieved: `, deck.modules)
+                
+                const deck = await modulesResponse.json();
+                setDeckInfo(deck.deckInfo);
+                setModules(deck.modules);
+                console.log(`Deck info and modules retrieved: `, deck)
             } catch (error) {
                 console.error('Failed fetching deck: ', error)
             } finally {
                 setLoading(false)
             }
         }
-        fetchDeck();
+        fetchDeckModules();
     }, [authFetch])
 
+    let tab = {};
+    const tabsObj = modules.map((module) => {
+
+    })
+
     const tabs = {
-        'First': (
+        'Understanding the Football Industry Landscape': (
             <div>
                 {/* map over the deck data questions to generate questions */}
+                <div className="flex flex-col gap-4 py-12 border-b border-divider-light dark:border-divider-dark">
+                    <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
+                        {loading ? 'Section 1' : modules[0].content.subtopics[0].title}
+                    </p>
+                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                        {loading ? 'Section 1' : modules[0].content.subtopics[0].description}
+                    </p>
+                </div>
                 <EditQuestion /> {/* TODO: add prop deck={data} */}
+                <EditQuestion /> {/* modules[0].content.subtopics[0].description.questions.mcq||text||true/false gives an array of questions */}
                 <EditQuestion />
                 <EditQuestion />
                 <EditQuestion />
-                <EditQuestion />
+                <div className="flex flex-col gap-4 py-12 border-b border-divider-light dark:border-divider-dark">
+                    <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
+                        {loading ? 'Section 2' : modules[0].content.subtopics[1].title}
+                    </p>
+                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                        {loading ? 'Section 2' : modules[0].content.subtopics[1].description}
+                    </p>
+                </div>
                 <EditQuestion />
                 <EditQuestion />
                 <EditQuestion />
                 <EditQuestion />
             </div>
         ), 
-        'Second': (
+        'Football Economics and Finance': (
             <div>
                 second
             </div>
         ), 
-        'Third': (
+        'Branding and Marketing in Football': (
             <div>
                 third
             </div>
@@ -79,24 +102,25 @@ export default function DeckEdit({ params, children }) {
     return (
         <div>
             <DeckHeader 
-                title={'🌐 Deck Title'}
-                description={'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui dolore ipsa ipsam assumenda tempore quisquam ratione perferendis odio, quibusdam incidunt repellendus vero vel laudantium, nemo asperiores delectus obcaecati esse! Facere!'}
-                className={'md:max-w-[75%]'}
+                title={deckInfo.title}
+                description={deckInfo.description}
+                loading={loading}
+                // className={'md:max-w-[75%]'}
             />
             <Tabs 
                 tabsObj={tabs} 
                 active={active}
                 setActive={setActive}
             >
-                <div className="w-full px-8 py-8 border-b border-divider-light dark:border-divider-dark">
-                    <CustomButton
+                <div className="w-full px-8 ">
+                    {/* <CustomButton
                         variant="soft"
                         frontIcon={<Sparkles size={16} />}
                         className='w-full'
                         // onClick={handleAddQuestion()}
                     >
                         Add Question
-                    </CustomButton>
+                    </CustomButton> */}
                 </div>
                 {tabs[active]}
             </Tabs>
