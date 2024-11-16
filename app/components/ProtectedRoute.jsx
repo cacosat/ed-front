@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }) {
         }
     }, [user, initializingAuth, router])
 
-    if (!initializingAuth) {
+    if (initializingAuth) {
         return <LoaderCircle className='h-[100vh] animate-spin' />
     }
 
