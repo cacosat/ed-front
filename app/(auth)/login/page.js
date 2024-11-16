@@ -14,7 +14,7 @@ import { AuthContext } from "@/app/contexts/AuthProvider";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-    const [activeTab, setActiveTab] = useState('Sign up');
+    const [activeTab, setActiveTab] = useState('Log in');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,8 +22,15 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const { login, register, logout, authFetch } = useContext(AuthContext);
+    const { user, initializingAuth, login, register, logout, authFetch } = useContext(AuthContext);
     const router = useRouter();
+    
+    useEffect(() => {
+        if (!initializingAuth && user) {
+          // User is authenticated, redirect to home page
+          router.push('/');
+        }
+    }, [user, initializingAuth, router]);
     
     const handleUsername = (e) => {
         setUsername(e.target.value)

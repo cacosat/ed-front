@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import { useState, useEffect, useContext, useRef } from "react";
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/app/contexts/AuthProvider";
 import DeckHeader from "@/app/components/DeckHeader";
 import EditQuestion from "@/app/components/EditQuestion";
 import CustomButton from "@/app/components/CustomButton";
@@ -14,9 +14,11 @@ export default function DeckEdit({ params, children }) {
     const [deckInfo, setDeckInfo] = useState({});
     const [modules, setModules] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { authFetch } = useContext(AuthContext);
+    const { user, initializingAuth, authFetch } = useContext(AuthContext);
     const deckId = params.id;
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    
 
     useEffect(() => {
         const fetchDeckModules = async () => {

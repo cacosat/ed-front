@@ -6,6 +6,7 @@ import {
     useEffect
 } from 'react';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export const AuthContext = createContext();
 
@@ -46,14 +47,19 @@ export function AuthProvider({ children }) {
             })
 
             if (!response.ok) {
-                throw new Error('Failed request to refresh access token (from AuthContext)')
+                if ([401, 403].includes(response.status)) { // 401 Unauthorized, 403 Forbidden, mean the user isn't authenticated
+                    setAccessToken(null);
+                    setUser(null);
+                    return null
+                }
+                throw new Error(`Failed request to /refresh-token (AuthContext), with code ${response.status} ${response.statusText}`)
             }
 
             const data = await response.json()
 
             setAccessToken(data.accessToken);
             setUser(data.user)
-            return { accesToken: data.accessToken, user: user };
+            return { accessToken: data.accessToken, user: data.user };
         } catch (error) {
             console.error('Error refreshing token (from AuthContext): ', {
                 message: error.message,

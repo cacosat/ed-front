@@ -27,7 +27,7 @@ export default function CustomButton({
         <button 
             onClick={onClick} 
             type={type} 
-            className={`${baseClasses} ${variantClasses[actualVariant]}`} 
+            className={` h-fit ${baseClasses} ${variantClasses[actualVariant]}`} 
             disabled={disabled}
         >
             {frontIcon && (
@@ -41,7 +41,7 @@ export default function CustomButton({
                 </div>
             )}
             {endIcon && (
-                <div>
+                <div className="">
                     {endIcon}
                 </div>
             )}
