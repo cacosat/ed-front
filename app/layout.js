@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google';
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "./contexts/themeProvider";
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthProvider';
 import Nav from './components/nav';
 
 const inter = Inter({

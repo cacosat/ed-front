@@ -10,7 +10,7 @@ import FormInput from "@/app/components/FormInput";
 import Tabs from "@/app/components/Tabs"
 import CustomButton from "@/app/components/CustomButton";
 import { InfoCard } from "@/app/components/Card";
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/app/contexts/AuthProvider";
 import { useRouter } from "next/navigation";
 
 export default function Login() {

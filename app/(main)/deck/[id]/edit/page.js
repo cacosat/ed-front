@@ -59,7 +59,7 @@ export default function DeckEdit({ params, children }) {
                 </div>
                 <EditQuestion /> {/* TODO: add prop deck={data} */}
                 <EditQuestion /> {/* modules[0].content.subtopics[0].description.questions.mcq||text||true/false gives an array of questions */}
-                <EditQuestion />
+                <EditQuestion /> 
                 <EditQuestion />
                 <EditQuestion />
                 <div className="flex flex-col gap-4 py-12 border-b border-divider-light dark:border-divider-dark">

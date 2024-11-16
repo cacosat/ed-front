@@ -12,8 +12,31 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
+    const [initializingAuth, setInitializingAuth] = useState(true);
     const router = useRouter();
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    /* 
+    useEffect hook to refresh component on mount,
+    so initializingAuth can be set and passed 
+    down to child components, through an arrow
+    function that executes a token refreshal so
+    initializing user to null can be avoided
+    */
+
+    useEffect(() => {
+        const initializeAuth = async () => {
+            try {
+                await refreshAccessToken();
+            } catch (error) {
+                console.error('Failed to initialize Auth in provider: ', error)      
+            } finally {
+                setInitializingAuth(false)
+            }
+        };
+
+        initializeAuth();
+    }, []) // dependency array empty means only when compnent mounts
 
     const refreshAccessToken = async () => {
         try {
@@ -29,7 +52,8 @@ export function AuthProvider({ children }) {
             const data = await response.json()
 
             setAccessToken(data.accessToken);
-            return data.accessToken;
+            setUser(data.user)
+            return { accesToken: data.accessToken, user: user };
         } catch (error) {
             console.error('Error refreshing token (from AuthContext): ', {
                 message: error.message,
@@ -66,7 +90,7 @@ export function AuthProvider({ children }) {
         if (response.status === 401) {
             try {
                 // refresh it
-                const newAccessToken = await refreshAccessToken();
+                const { newAccessToken, user } = await refreshAccessToken();
                 options.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 response = await fetch(url, options);
             } catch (error) {
@@ -181,7 +205,7 @@ export function AuthProvider({ children }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, accessToken, login, register, logout, authFetch }}>
+        <AuthContext.Provider value={{ initializingAuth, user, accessToken, login, register, logout, authFetch }}>
             {children}
         </AuthContext.Provider>
     )
