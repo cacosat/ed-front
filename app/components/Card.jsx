@@ -75,7 +75,7 @@ export function BaseCard({ className, children }){
 export function InfoCard({ className, children }){
 
     return (
-        <BaseCard className={`flex gap-4 items-center ${className}`}>
+        <BaseCard className={`flex gap-4 items-center text-sm ${className}`}>
             <CustomButton
                 variant="softDisabled"
                 text={false}

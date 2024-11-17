@@ -56,10 +56,12 @@ export function AuthProvider({ children }) {
             }
 
             const data = await response.json()
+            const accessToken = data.accessToken;
+            const user = data.user;
 
-            setAccessToken(data.accessToken);
-            setUser(data.user)
-            return { accessToken: data.accessToken, user: data.user };
+            setAccessToken(accessToken);
+            setUser(user)
+            return { accessToken, user };
         } catch (error) {
             console.error('Error refreshing token (from AuthContext): ', {
                 message: error.message,
@@ -111,6 +113,11 @@ export function AuthProvider({ children }) {
                 router.push('/login');
                 throw error
             }
+        }
+
+        if (!response.ok) {
+            const error = await response.json()
+            throw new Error(`authFetch Request failed with error msg: ${error.message}`)
         }
 
         return response;
