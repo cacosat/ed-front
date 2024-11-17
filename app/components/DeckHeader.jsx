@@ -22,14 +22,14 @@ export default function DeckHeader({ title, description, loading, className }){
                 </div>    
             </div>
             <div className={`flex flex-col gap-4`}>
-                <p className="font-bold text-2xl text-text-primary-light dark:text-text-primary-dark">
+                <div className="font-bold text-2xl text-text-primary-light dark:text-text-primary-dark">
                     {loading ? (
                         <Skeleton className="w-[75%] h-[32px] rounded-full" />
                     ) : (
                         title
                     )}
-                </p>
-                <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                </div>
+                <div className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
                     {loading ? (
                         <div className="flex flex-col gap-2">
                             <Skeleton className="w-[100%] h-[14px] rounded-full" />
@@ -39,7 +39,7 @@ export default function DeckHeader({ title, description, loading, className }){
                     ) : (
                         description
                     )}
-                </p>
+                </div>
             </div>
         </div>
     )

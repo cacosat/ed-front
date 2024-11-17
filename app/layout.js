@@ -8,7 +8,7 @@ import Nav from './components/nav';
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  varaible: '--font-inter',
+  variable: '--font-inter',
 })
 
 export const metadata = {
