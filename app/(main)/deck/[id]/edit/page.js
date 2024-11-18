@@ -6,7 +6,10 @@ import DeckHeader from "@/app/components/DeckHeader";
 import EditQuestion from "@/app/components/EditQuestion";
 import CustomButton from "@/app/components/CustomButton";
 import Tabs from '@/app/components/Tabs.jsx'
-import { Sparkles } from "lucide-react";
+import {
+    Sparkles,
+    LoaderCircle
+} from "lucide-react";
 
 export default function DeckEdit({ params, children }) {
     // params has the id of the deck passed through the url
@@ -50,50 +53,6 @@ export default function DeckEdit({ params, children }) {
         return accumulator;
     }, {})
 
-    // const tabs = {
-    //     'Understanding the Football Industry Landscape': (
-    //         <div>
-    //             {/* map over the deck data questions to generate questions */}
-    //             <div className="flex flex-col gap-4 py-12 border-b border-divider-light dark:border-divider-dark">
-    //                 <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
-    //                     {loading ? 'Section 1' : modules[0].content.subtopics[0].title}
-    //                 </p>
-    //                 <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-    //                     {loading ? 'Section 1' : modules[0].content.subtopics[0].description}
-    //                 </p>
-    //             </div>
-    //             <EditQuestion /> {/* TODO: add prop deck={data} */}
-    //             <EditQuestion /> {/* modules[0].content.subtopics[0].description.questions.mcq||text||true/false gives an array of questions */}
-    //             <EditQuestion /> 
-    //             <EditQuestion />
-    //             <EditQuestion />
-    //             <div className="flex flex-col gap-4 py-12 border-b border-divider-light dark:border-divider-dark">
-    //                 <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
-    //                     {loading ? 'Section 2' : modules[0].content.subtopics[1].title}
-    //                 </p>
-    //                 <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-    //                     {loading ? 'Section 2' : modules[0].content.subtopics[1].description}
-    //                 </p>
-    //             </div>
-    //             <EditQuestion />
-    //             <EditQuestion />
-    //             <EditQuestion />
-    //             <EditQuestion />
-    //         </div>
-    //     ), 
-    //     'Football Economics and Finance': (
-    //         <div>
-    //             second
-    //         </div>
-    //     ), 
-    //     'Branding and Marketing in Football': (
-    //         <div>
-    //             third
-    //         </div>
-    //     )
-    // }
-    // const [active, setActive] = useState(Object.keys(tabs)[0]);
-
     function handleAddQuestion(numOfQuestionsAdded) {
         /*
         Handling these means to Add a question to the deck, this will be allowed
@@ -112,9 +71,12 @@ export default function DeckEdit({ params, children }) {
                 loading={loading}
                 // className={'md:max-w-[75%]'}
             />
-            {loading || !active ? (
-                <div className="flex justify-center animate-spin">
-                    Loading...
+            { loading || !active ? (
+                <div className="flex flex-col items-center gap-4 animate-spin">
+                    <LoaderCircle size={24} className='text-accent animate-spin' />
+                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                    Loading Content...
+                    </p>
                 </div>
             ) : (
                 <Tabs 
@@ -143,22 +105,34 @@ export function Module({ module, loading }) {
 
 return (
     <div>
-        testing
         {module.content.subtopics.map((subtopic) => {
-            <div>
-                <div className="flex flex-col gap-4 py-12 border-b border-divider-light dark:border-divider-dark">
-                    <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
-                        {loading ? 'Loading...' : subtopic.title}
-                    </p>
-                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                        {loading ? 'Loading...' : subtopic.description}
-                    </p>
+            return (
+                <div key={subtopic.title}>
+                    <div className="flex flex-col gap-4 py-16 border-b border-divider-light dark:border-divider-dark">
+                        <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
+                            {loading ? 'Loading...' : subtopic.title}
+                        </p>
+                        <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                            {loading ? 'Loading...' : subtopic.description}
+                        </p>
+                    </div>
+                    <QuestionSection  
+                        mcq={subtopic.questions.mcq} 
+                        trueFalse={subtopic.questions['true/false']} 
+                        text={subtopic.questions.text}
+                    />
                 </div>
-                <EditQuestion questions={subtopic.questions} />
-                <EditQuestion questions={subtopic.questions} />
-                <EditQuestion questions={subtopic.questions} />
-            </div>
+            )
         })}
     </div>
 )
+}
+
+export function QuestionSection({ mcq, trueFalse, text }) {
+
+    return (
+        <div>
+            <EditQuestion mcq={mcq} trueFalse={trueFalse} text={text} />
+        </div>
+    )
 }

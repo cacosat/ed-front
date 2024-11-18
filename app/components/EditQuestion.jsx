@@ -9,10 +9,10 @@ import CustomButton from "./CustomButton";
 import {AnswerCard} from "./Card";
 import { Badge } from "@/components/ui/badge";
 
-export default function EditQuestion({ props }){
+export default function EditQuestion({ mcq, trueFalse, text }){
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(!open);
-    const question = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non ipsa debitis ratione neque nostrum, assumenda repellat, quibusdam eligendi at minus vitae accusamus voluptatum quas quod consectetur distinctio aliquam consequuntur porro?';
+    // const question = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non ipsa debitis ratione neque nostrum, assumenda repellat, quibusdam eligendi at minus vitae accusamus voluptatum quas quod consectetur distinctio aliquam consequuntur porro?';
     const badges = ['tag1', 'tag2', 'tag3'];
 
     return (
@@ -22,10 +22,10 @@ export default function EditQuestion({ props }){
                 {/* Question container */}
                 <div className="flex flex-col gap-4">
                     <p>
-                        {question}
+                        {mcq[0].questionText}
                     </p>
                     <div>
-                        {badges.map((tag, index) => <Badge key={tag} variant={'oultine'}>{tag}</Badge>)}
+                        <Badge key={mcq[0].questionId} variant={'oultine'}>{mcq[0].questionType === 'mcq' ? 'Multiple Choice' : 'Question type'}</Badge>
                     </div>
                 </div>
                 <div className={``}>
