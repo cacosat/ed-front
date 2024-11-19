@@ -9,7 +9,7 @@ import CustomButton from "./CustomButton";
 import {AnswerCard} from "./Card";
 import { Badge } from "@/components/ui/badge";
 
-export default function EditQuestion({ mcq, trueFalse, text }){
+export default function EditQuestion({ id, question, type, answers }){
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(!open);
     // const question = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non ipsa debitis ratione neque nostrum, assumenda repellat, quibusdam eligendi at minus vitae accusamus voluptatum quas quod consectetur distinctio aliquam consequuntur porro?';
@@ -22,10 +22,10 @@ export default function EditQuestion({ mcq, trueFalse, text }){
                 {/* Question container */}
                 <div className="flex flex-col gap-4">
                     <p>
-                        {mcq[0].questionText}
+                        {question}
                     </p>
                     <div>
-                        <Badge key={mcq[0].questionId} variant={'oultine'}>{mcq[0].questionType === 'mcq' ? 'Multiple Choice' : 'Question type'}</Badge>
+                        <Badge key={type} variant={'oultine'}>{type === 'mcq' ? 'Multiple Choice' : 'Question Type'}</Badge>
                     </div>
                 </div>
                 <div className={``}>
@@ -78,15 +78,15 @@ export default function EditQuestion({ mcq, trueFalse, text }){
                             extraClasses='' 
                             status='neutral'
                             type='mcq'
-                            answer='Answer'
-                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
+                            answer='Answer' // answers.option
+                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!' // answers.explanation
                         />
                         <AnswerCard 
                             extraClasses='' 
                             status='neutral'
                             type='mcq'
                             answer='Answer'
-                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
+                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!' 
                         />
                         <AnswerCard 
                             extraClasses='' 

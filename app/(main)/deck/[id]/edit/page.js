@@ -117,6 +117,7 @@ return (
                         </p>
                     </div>
                     <QuestionSection  
+                        loading={loading}
                         mcq={subtopic.questions.mcq} 
                         trueFalse={subtopic.questions['true/false']} 
                         text={subtopic.questions.text}
@@ -128,11 +129,33 @@ return (
 )
 }
 
-export function QuestionSection({ mcq, trueFalse, text }) {
+export function QuestionSection({ loading, mcq, trueFalse, text }) {
 
     return (
         <div>
-            <EditQuestion mcq={mcq} trueFalse={trueFalse} text={text} />
+            {loading ? ('Loading Multiple Choice...') : (
+                mcq.map((question) => {
+                    return (
+                        <EditQuestion 
+                            key={question.id} 
+                            id={question.id} 
+                            question={question.questionText} 
+                            type={question.questionType}
+                            answers={question.options}
+                        />
+                    )
+                })
+            )}
+            
+        </div>
+    )
+}
+
+export function MultipleChoice({ mcq }) {
+
+    return (
+        <div>
+            Mcq
         </div>
     )
 }
