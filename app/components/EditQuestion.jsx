@@ -6,7 +6,7 @@ import {
     Trash2
  } from "lucide-react";
 import CustomButton from "./CustomButton";
-import {AnswerCard} from "./Card";
+import {    AnswerCard } from "./Card";
 import { Badge } from "@/components/ui/badge";
 
 export default function EditQuestion({ id, question, type, answers }){
@@ -25,7 +25,7 @@ export default function EditQuestion({ id, question, type, answers }){
                         {question}
                     </p>
                     <div>
-                        <Badge key={type} variant={'oultine'}>{type === 'mcq' ? 'Multiple Choice' : 'Question Type'}</Badge>
+                        <Badge key={type}>{type === 'mcq' ? 'Multiple Choice' : (type === 'true/false' ? 'True or False' : 'Open Question')}</Badge>
                     </div>
                 </div>
                 <div className={``}>
@@ -44,7 +44,7 @@ export default function EditQuestion({ id, question, type, answers }){
                     text-text-primary-light dark:text-text-primary-dark
                     ${open ? 'max-h-[3000px] opacity-100' : 'max-h-0 opacity-0'}`}
             >
-                <div className="flex gap-2 py-8 px-6">
+                {/* <div className="flex gap-2 py-8 px-6">
                     <CustomButton
                         className={'w-full'}
                         variant="soft"
@@ -59,42 +59,41 @@ export default function EditQuestion({ id, question, type, answers }){
                     >
                         Delete Question
                     </CustomButton>
-                </div>
+                </div> */}
                 {/* Open container */}
                 <div className={`py-4 px-12 transform transition-transform flex flex-col gap-4`}>
                     {/* Answers container */}
                     <p className="font-light text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                        The following are the choices that will be presented with the question, and their explanation.
+                        {type !== 'text' ? (
+                            'The following are the choices that will be presented with the question, and their explanation.'
+                        ) : (
+                            'This is an open question so you’ll need to come up with an answer, but here are a couple of sample answers.'
+                        )}
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-8">
-                        <AnswerCard 
-                            extraClasses='' 
-                            status='active'
-                            type='mcq'
-                            answer='Answer'
-                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
-                        />
-                        <AnswerCard 
-                            extraClasses='' 
-                            status='neutral'
-                            type='mcq'
-                            answer='Answer' // answers.option
-                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!' // answers.explanation
-                        />
-                        <AnswerCard 
-                            extraClasses='' 
-                            status='neutral'
-                            type='mcq'
-                            answer='Answer'
-                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!' 
-                        />
-                        <AnswerCard 
-                            extraClasses='' 
-                            status='neutral'
-                            type='mcq'
-                            answer='Answer'
-                            explanation='Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptate laudantium, nostrum voluptatum numquam eum error iusto, facilis ratione ullam officia nihil sit rem adipisci voluptas laborum reprehenderit commodi voluptatibus!'
-                        />
+                        {type === 'text' ? (
+                            answers.map((answer) => {
+                                return (
+                                    <AnswerCard 
+                                        type={type}
+                                        answer={answer}
+                                        explanation={answer.explanation}
+                                    />
+                                )
+                            })
+                        ) : (
+                            answers.map((answer) => {
+                                return (
+                                    <AnswerCard 
+                                        status={answer.isCorrect ? 'active' : 'neutral'}
+                                        type={type}
+                                        isCorrect={answer.isCorrect}
+                                        answer={answer.option}
+                                        explanation={answer.explanation}
+                                    />
+                                )
+                            })
+                        )}
                     </div>
                 </div>
             </div>

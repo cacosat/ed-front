@@ -75,7 +75,7 @@ export default function DeckEdit({ params, children }) {
                 <div className="flex flex-col items-center gap-4 animate-spin">
                     <LoaderCircle size={24} className='text-accent animate-spin' />
                     <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                    Loading Content...
+                        Loading Content...
                     </p>
                 </div>
             ) : (
@@ -146,16 +146,32 @@ export function QuestionSection({ loading, mcq, trueFalse, text }) {
                     )
                 })
             )}
-            
-        </div>
-    )
-}
-
-export function MultipleChoice({ mcq }) {
-
-    return (
-        <div>
-            Mcq
+            {loading ? ('Loading True/False...') : (
+                trueFalse.map((question) => {
+                    return (
+                        <EditQuestion
+                            key={question.questionText} 
+                            id={question.questionText} 
+                            question={question.questionText} 
+                            type={question.questionType}
+                            answers={question.options}
+                        />
+                    )
+                })
+            )}
+            {loading ? ('Loading Open Questions...') : (
+                text.map((question) => {
+                    return (
+                        <EditQuestion
+                            key={question.questionText} 
+                            id={question.questionText} 
+                            question={question.questionText} 
+                            type={question.questionType}
+                            answers={question.sampleAnswers}
+                        />
+                    )
+                })
+            )}
         </div>
     )
 }

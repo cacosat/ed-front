@@ -8,13 +8,14 @@ import {
 import CustomButton from "./CustomButton";
 
 export function AnswerCard({
-    extraClasses,
-    status = 'neutral', // determines card status ('acitve', 'error', 'neutral')
+    extraClasses = '',
     type,
+    status = 'neutral', // determines card status ('acitve', 'error', 'neutral')
+    isCorrect = false,
     answer,
     explanation,
 }){
-    const baseClasses = `p-4 bg-background-card-light dark:bg-background-card-dark text-text-primary-light dark:text-text-primary-second rounded-lg`
+    const baseClasses = `flex flex-col justify-center p-4 bg-background-card-light dark:bg-background-card-dark text-text-primary-light dark:text-text-primary-second rounded-lg`
     const statusClasses = {
         neutral: 'border border-stroke-light-light dark:border-stroke-dark-light text-accent',
         active: 'border-2 border-accent',
@@ -29,22 +30,26 @@ export function AnswerCard({
             Explanation
             Report error button
             */}
-            <div className="flex flex-col gap-4 text-sm">
-                <div className="flex justify-between items-center font-medium">
-                    <div className={`text-base text-text-primary-light dark:text-text-primary-dark ${status === 'active' ? '!text-accent ' : status === 'error' ? '!text-text-red' : ''}`}>
+            <div className="flex flex-col justify-between h-full gap-4 text-sm">
+                <div className={`flex gap-8 justify-between items-center ${type === 'text' ? ' font-normal text-sm' : 'font-medium text-base'}`}>
+                    <div className={` text-text-primary-light dark:text-text-primary-dark ${status === 'active' ? '!text-accent ' : status === 'error' ? '!text-text-red' : ''}`}>
                         {answer}
                     </div>
-                    <div className={``}>
-                        {status === 'active' ? (
-                            <CircleCheckBig size={18} strokeWidth={2} className="text-accent"/>
-                        ) : (
-                            status === 'error' ? <CircleX size={18} className="text-text-red" /> : null
-                        )}
+                    { type !== 'text' ? (
+                        <div className={``}>
+                            {isCorrect ? (
+                                <CircleCheckBig size={18} strokeWidth={2} className="text-accent"/>
+                            ) : (
+                                status === 'error' ? <CircleX size={18} className="text-text-red" /> : null
+                            )}
+                        </div>
+                    ) : (null)}
+                </div>
+                {type === 'text' ? (null) : (
+                    <div className="text-text-secondary-light dark:text-text-secondary-dark font-light p-4 border-l-2 border-accent bg-background-accent-soft rounded-r-lg">
+                        <p><span className="font-medium text-accent">Explanation: </span>{explanation}</p>
                     </div>
-                </div>
-                <div className="text-text-secondary-light dark:text-text-secondary-dark font-light p-4 border-l-2 border-accent bg-background-accent-soft rounded-r-lg">
-                    <p><span className="font-medium text-accent">Explanation: </span>{explanation}</p>
-                </div>
+                )}
                 <div className="flex justify-end">
                     <CustomButton 
                         variant="softError"
