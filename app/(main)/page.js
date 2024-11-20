@@ -37,7 +37,7 @@ export default function Home() {
 
         const data = await response.json();
         setDecks(data.decks);
-        console.log('Data in decks: ', data);
+        // console.log('Data in decks: ', data);
       } catch (error) {
         console.error('Failed fetching user decks data: ', error)
       } finally {
@@ -59,7 +59,7 @@ export default function Home() {
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
           {decks ? ( 
-            decks.map((deck) => {
+            decks.filter((deck) => deck.status === 'complete').map((deck) => {
               return <DeckListEntry key={deck.id} deckInfo={deck} />
             })
           ) : (

@@ -1,35 +1,92 @@
 'use client'
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { InfoCard, DifficultyCard } from "@/app/components/Card";
+import { AuthContext } from "@/app/contexts/AuthProvider";
 import Tabs from "@/app/components/Tabs";
 import CustomButton from "@/app/components/CustomButton";
 import DeckHeader from "@/app/components/DeckHeader";
+import { BaseCard } from "@/app/components/Card";
 
 export default function DeckCreate({ children }) {
-    const [keyWords, setKeyWords] = useState('');
+    const [loading, setLoading] = useState('false');
+    const [activeTab, setActiveTab] = useState('Description')
+    const [keywords, setKeywords] = useState('');
     const [description, setDescription] = useState('');
     const [activeDifficulty, setActiveDifficulty] = useState('medium');
+    const [previewData, setPreviewData] = useState(null);
+    const [previewEnabled, setIsPreviewEnabled] = useState(false);
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const { authFetch } = useContext(AuthContext);
 
-    const handleKeyWordsChange = (e) => {
-        console.log(keyWords)
-        setKeyWords(e.target.value)
+    const handlekeywordsChange = (e) => {
+        setKeywords(e.target.value)
     }
 
     const handleDescriptionChange = (e) => {
-        console.log(description)
         setDescription(e.target.value)
     }
 
     const handleDifficultyChange = (difficulty) => {
-        console.log(difficulty);
         setActiveDifficulty(difficulty);
     }
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('form submitted', event.target)
-        // handle submit of deck creation form
+        if (!keywords || !description) {
+            alert('Description and keywords are required, please fill all necessary fields.')
+            return;
+        }
+
+        setLoading(true);
+        
+        try {
+            const keywordsArray = keywords.split(',').map((word) => word.trim()).filter((word) => word === '');
+
+            const reqBody = {
+                description: description,
+                keywords: keywords,
+                difficulty: activeDifficulty
+            }
+
+            console.log('Body for the request: ', reqBody)
+
+            const response = await authFetch(`${API_BASE_URL}/decks/syllabus`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reqBody)
+            });
+
+            if (!response.ok) { 
+                throw new Error(`Request error, status: ${response.status}`)
+            }
+
+            const data = await response.json();
+            console.log('Success: ', data);
+
+            setPreviewData(data);
+            setIsPreviewEnabled(true);
+            setActiveTab('Preview')
+        } catch (error) {
+            console.error('Failed form submition to create syllabus: ', {
+                error: error,
+                keywords: keywords,
+                description: description
+            })
+            alert(`Failed form submission with error: ${error}`)
+        } finally {
+            setLoading(false);
+        }
+        /* 
+        POST req to /api/decks/syllabus with body:
+        {
+            "description": "...",
+            "keywords": ["", "", ""],
+            "difficulty": "medium"
+        }
+        */
     }
     const tabs = {
         'Description': (
@@ -61,15 +118,15 @@ export default function DeckCreate({ children }) {
                             <div className="flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="deckDescription" className="text-base text-text-primary-light dark:text-text-primary-dark">Key Words<span className="text-accent">*</span></label>
-                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">These will be used to guide the generation of the deck.</p>
+                                    <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">These will be used to guide the contents of the deck. Write words separated by commas as shown in the example.</p>
                                 </div>
                                 <input 
-                                    id="deckKeyWords" 
+                                    id="deckkeywords" 
                                     className={`placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark placeholder:italic placeholder:font-light 
-                                        text-sm border ${keyWords ? 'border-accent' : 'border-stroke-light-gray dark:border-stroke-dark-gray'} outline-none focus:border-accent dark:focus:border-accent ${keyWords ? 'bg-background-card-light dark:bg-background-card-dark' : 'bg-background-light dark:bg-background-dark'} dark:focus:bg-background-card-dark rounded-lg p-2 transition-all`}
+                                        text-sm border ${keywords ? 'border-accent' : 'border-stroke-light-gray dark:border-stroke-dark-gray'} outline-none focus:border-accent dark:focus:border-accent ${keywords ? 'bg-background-card-light dark:bg-background-card-dark' : 'bg-background-light dark:bg-background-dark'} dark:focus:bg-background-card-dark rounded-lg p-2 transition-all`}
                                     rows="4" 
-                                    value={keyWords}
-                                    onChange={handleKeyWordsChange}
+                                    value={keywords}
+                                    onChange={handlekeywordsChange}
                                     placeholder="Homo sapiens, evolution, philosophy..."
                                 ></input>
                             </div>
@@ -113,19 +170,56 @@ export default function DeckCreate({ children }) {
         'Preview': (
             <div className="flex flex-col gap-12 py-12">
                 <InfoCard>
-                    <p>The following is a brief overview of how the deck will be structured, <span className="text-accent font-medium">review the different topics to be covered, adjust them if needed and then accept or discard the deck</span>. You'll only be able to request up to 3 regeneration of the sections shown below.</p>
+                    <p>The following is a brief overview of how the deck will be structured, <span className="text-accent font-medium">review the different topics and subtopics to be covered, and then accept or discard the deck</span>.</p>
                 </InfoCard>
                 <div>
-                    <DeckHeader 
-                        title={'🌐 Deck Title'}
-                        description={'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui dolore ipsa ipsam assumenda tempore quisquam ratione perferendis odio, quibusdam incidunt repellendus vero vel laudantium, nemo asperiores delectus obcaecati esse! Facere!'}
-                        className={'md:max-w-[75%] !p-0'}
-                    />
+                    {loading ? (
+                        <div className="flex justify-center items-center p-12">
+                            <p>Loading preview...</p>
+                        </div>
+                    ) : previewData ? (
+                        <div className="border-b border-divider-light dark:border-divider-dark">
+                            <DeckHeader
+                                title={previewData.preview.content.title || '🌐 Deck Title'}
+                                description={previewData.preview.content.explanation || 'Description'}
+                                className={'pt-0'}
+                            />
+                            {previewData.preview.content.content.breakdown.map((module) => {
+                                return (
+                                    <div className="flex flex-col gap-2 py-8 border-t border-divider-light dark:border-divider-dark">
+                                        <div className="flex flex-col gap-4 py-8 ">
+                                            <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
+                                                {module.module.title}
+                                            </p>
+                                            <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                                {module.module.description}
+                                            </p>
+                                        </div>
+                                        <div className="flex flex-col gap-2 pb-8 ">
+                                            {module.subtopics.map((subtopic) => {
+                                                return (
+                                                    <BaseCard className={`flex flex-col gap-2`}>
+                                                        <p className="font-normal text-sm text-text-primary-light dark:text-text-primary-dark">
+                                                            {subtopic.title}
+                                                        </p>
+                                                        <p className="font-light text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                                            {subtopic.description}
+                                                        </p>
+                                                    </BaseCard>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    ) : (
+                        <p>Submit the form to see the preview</p>
+                    )}
                 </div>
             </div>
         ), 
     }
-    const [activeTab, setActiveTab] = useState(Object.keys(tabs)[0])
 
     return (
         <div>
@@ -140,7 +234,13 @@ export default function DeckCreate({ children }) {
             <Tabs
                 tabsObj={tabs}
                 active={activeTab}
-                setActive={setActiveTab}
+                setActive={(tab) => {
+                    if (tab === 'Preview' && !previewEnabled) {
+                        return; // Prevent switching to Preview if not enabled
+                    }
+                    setActiveTab(tab);
+                }}
+                disabledTabs={previewEnabled ? [] : ['Preview']}
             >
                 {tabs[activeTab]}
             </Tabs>

@@ -34,7 +34,7 @@ export default function DeckEdit({ params, children }) {
                 const deck = await modulesResponse.json();
                 setDeckInfo(deck.deckInfo);
                 setModules(deck.modules);
-                console.log(`Deck info and modules retrieved: `, deck)
+                // console.log(`Deck info and modules retrieved: `, deck)
 
                 if (deck.modules.length > 0) {
                     setActive(deck.modules[0].title);

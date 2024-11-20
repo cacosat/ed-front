@@ -75,6 +75,7 @@ export default function EditQuestion({ id, question, type, answers }){
                             answers.map((answer) => {
                                 return (
                                     <AnswerCard 
+                                        key={answer}
                                         type={type}
                                         answer={answer}
                                         explanation={answer.explanation}
@@ -85,6 +86,7 @@ export default function EditQuestion({ id, question, type, answers }){
                             answers.map((answer) => {
                                 return (
                                     <AnswerCard 
+                                        key={answer.option}
                                         status={answer.isCorrect ? 'active' : 'neutral'}
                                         type={type}
                                         isCorrect={answer.isCorrect}
