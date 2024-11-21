@@ -2,8 +2,13 @@
 
 import React from "react";
 import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
 import { InfoCard, DifficultyCard } from "@/app/components/Card";
 import { AuthContext } from "@/app/contexts/AuthProvider";
+import {
+    CircleCheck,
+    Trash2
+} from "lucide-react";
 import Tabs from "@/app/components/Tabs";
 import CustomButton from "@/app/components/CustomButton";
 import DeckHeader from "@/app/components/DeckHeader";
@@ -16,9 +21,18 @@ export default function DeckCreate({ children }) {
     const [description, setDescription] = useState('');
     const [activeDifficulty, setActiveDifficulty] = useState('medium');
     const [previewData, setPreviewData] = useState(null);
+    const [deckId, setDeckId] = useState(null);
+    const [created, setCreated] = useState(false);
     const [previewEnabled, setIsPreviewEnabled] = useState(false);
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
     const { authFetch } = useContext(AuthContext);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (created) {
+            router.push('/')
+        }
+    }, [created])
 
     const handlekeywordsChange = (e) => {
         setKeywords(e.target.value)
@@ -31,6 +45,7 @@ export default function DeckCreate({ children }) {
     const handleDifficultyChange = (difficulty) => {
         setActiveDifficulty(difficulty);
     }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!keywords || !description) {
@@ -67,6 +82,7 @@ export default function DeckCreate({ children }) {
             console.log('Success: ', data);
 
             setPreviewData(data);
+            setDeckId(data.deckId);
             setIsPreviewEnabled(true);
             setActiveTab('Preview')
         } catch (error) {
@@ -88,6 +104,40 @@ export default function DeckCreate({ children }) {
         }
         */
     }
+
+    const handleCreateSubmit = async (event) => {
+        event.preventDefault();
+        
+        if (!deckId) {
+            alert("Can't create deck right now, the full preview must be available first.")
+            return;
+        }
+
+        try {
+            const response = await authFetch(`${API_BASE_URL}/decks/${deckId}/create`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+
+            if (!response.ok) {
+                throw new Error(`Request failed to create deck with status: ${response.status}`)
+            }
+
+            const data = response.json();
+
+            if (data.ok) {
+                console.log('Redirecting')
+                setCreated(true);
+            }
+
+            alert("Deck created succesfully, now you'll be redirected to the home page.")
+        } catch (error) {
+            console.error('Failed request to create deck from frontend: ', error)
+        }
+    }
+
     const tabs = {
         'Description': (
             <div className="flex flex-col gap-12 py-12">
@@ -178,7 +228,7 @@ export default function DeckCreate({ children }) {
                             <p>Loading preview...</p>
                         </div>
                     ) : previewData ? (
-                        <div className="border-b border-divider-light dark:border-divider-dark">
+                        <div className="">
                             <DeckHeader
                                 title={previewData.preview.content.title || '🌐 Deck Title'}
                                 description={previewData.preview.content.explanation || 'Description'}
@@ -186,7 +236,7 @@ export default function DeckCreate({ children }) {
                             />
                             {previewData.preview.content.content.breakdown.map((module) => {
                                 return (
-                                    <div className="flex flex-col gap-2 py-8 border-t border-divider-light dark:border-divider-dark">
+                                    <div className="flex flex-col gap-2 py-8 border-t border-divider-light dark:border-divider-dark " key={module.module.title}>
                                         <div className="flex flex-col gap-4 py-8 ">
                                             <p className="font-medium text-xl text-text-primary-light dark:text-text-primary-dark ">
                                                 {module.module.title}
@@ -195,10 +245,10 @@ export default function DeckCreate({ children }) {
                                                 {module.module.description}
                                             </p>
                                         </div>
-                                        <div className="flex flex-col gap-2 pb-8 ">
+                                        <div className="flex flex-col gap-2 pb-8 px-4 ">
                                             {module.subtopics.map((subtopic) => {
                                                 return (
-                                                    <BaseCard className={`flex flex-col gap-2`}>
+                                                    <BaseCard className={`flex flex-col gap-2`} key={subtopic.title}>
                                                         <p className="font-normal text-sm text-text-primary-light dark:text-text-primary-dark">
                                                             {subtopic.title}
                                                         </p>
@@ -212,6 +262,24 @@ export default function DeckCreate({ children }) {
                                     </div>
                                 )
                             })}
+                            <form onSubmit={handleCreateSubmit}> 
+                                <div className="flex gap-2">
+                                    <CustomButton
+                                        className={'w-full'}
+                                        variant="solid"
+                                        frontIcon={<CircleCheck size={16} />}
+                                    >
+                                        Create Deck
+                                    </CustomButton>
+                                    <CustomButton
+                                        className={'w-full'}
+                                        variant="softError"
+                                        frontIcon={<Trash2 size={16} />}
+                                    >
+                                        Delete preview
+                                    </CustomButton>
+                                </div>
+                            </form>
                         </div>
                     ) : (
                         <p>Submit the form to see the preview</p>
