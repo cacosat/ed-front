@@ -1,6 +1,7 @@
 'use client'
 
 import Image from "next/image";
+import Link from "next/link";
 import { LoaderCircle, Play, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../components/CustomButton";
@@ -58,20 +59,32 @@ export default function Home() {
         </div>
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
-          {decks ? ( 
+          {decks.length !== 0 ? ( 
             decks.filter((deck) => deck.status === 'complete').map((deck) => {
               return <DeckListEntry key={deck.id} deckInfo={deck} />
             })
           ) : (
             <div>
-              {/* <DeckList /> */}
-              {loading && ( 
+              {loading ? ( 
                 <div className="flex flex-col items-center justify-center h-[50vh]">
                   <div className="flex flex-col items-center gap-4">
                     <LoaderCircle size={24} className='text-accent animate-spin' />
                     <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
                       Loading Decks...
                     </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-[50vh]">
+                  <div className="flex flex-col items-center gap-4">
+                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                      No decks available, create a new deck to start.
+                    </p>
+                    <Link href={'/deck/create'}>
+                      <CustomButton>
+                        New Deck
+                      </CustomButton>
+                    </Link>
                   </div>
                 </div>
               )}

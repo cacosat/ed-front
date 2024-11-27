@@ -49,9 +49,9 @@ export function DeckListEntry({ deckInfo }){
                         <FileQuestion className="" size={16} strokeWidth={2} />
                         {numOfModules}
                     </div>
-                    {/* <div className="flex gap-[2px] items-center">
+                    <div className="flex gap-[2px] items-center">
                         <Heart className="" size={16} strokeWidth={2} />
-                    </div>                     */}
+                    </div>
                 </div>
                 <div className="flex flex-col gap-2">
                     {/* button container */}

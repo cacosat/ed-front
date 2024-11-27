@@ -115,8 +115,6 @@ export function AuthProvider({ children }) {
             }
         }
 
-        console.log('response', response);
-
         if (!response.ok) {
             const error = await response.json()
             throw new Error(`authFetch Request failed with status ${response.status} error msg: ${error.message}`)
