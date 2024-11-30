@@ -7,7 +7,8 @@ import { InfoCard, DifficultyCard } from "@/app/components/Card";
 import { AuthContext } from "@/app/contexts/AuthProvider";
 import {
     CircleCheck,
-    Trash2
+    Trash2,
+    LoaderCircle
 } from "lucide-react";
 import Tabs from "@/app/components/Tabs";
 import CustomButton from "@/app/components/CustomButton";
@@ -16,7 +17,9 @@ import { BaseCard } from "@/app/components/Card";
 
 export default function DeckCreate({ children }) {
     const [loading, setLoading] = useState('false');
-    const [activeTab, setActiveTab] = useState('Description')
+    const [elapsedTime, setElapsedTime] = useState(0);
+    const [progress, setProgress] = useState({});
+    const [activeTab, setActiveTab] = useState('Description');
     const [keywords, setKeywords] = useState('');
     const [description, setDescription] = useState('');
     const [activeDifficulty, setActiveDifficulty] = useState('medium');
@@ -33,6 +36,22 @@ export default function DeckCreate({ children }) {
             router.push('/')
         }
     }, [created])
+
+    useEffect(() => {
+        // handle loading timer
+        let intervalId;
+        if (loading === true) {
+            intervalId = setInterval(() => {
+                setElapsedTime((prev) => prev + 1);
+            }, 100); // Update every 100ms instead of 1000ms
+        } else {
+            setElapsedTime(0);
+        }
+        
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [loading]);
 
     const handlekeywordsChange = (e) => {
         setKeywords(e.target.value)
@@ -63,8 +82,10 @@ export default function DeckCreate({ children }) {
                 keywords: keywords,
                 difficulty: activeDifficulty
             }
-
-            console.log('Body for the request: ', reqBody)
+            
+            // change tab
+            setIsPreviewEnabled(true);
+            setActiveTab('Preview');
 
             const response = await authFetch(`${API_BASE_URL}/decks/syllabus`, {
                 method: 'POST',
@@ -79,12 +100,9 @@ export default function DeckCreate({ children }) {
             }
 
             const data = await response.json();
-            console.log('Success: ', data);
 
             setPreviewData(data);
             setDeckId(data.deckId);
-            setIsPreviewEnabled(true);
-            setActiveTab('Preview')
         } catch (error) {
             console.error('Failed form submition to create syllabus: ', {
                 error: error,
@@ -95,14 +113,6 @@ export default function DeckCreate({ children }) {
         } finally {
             setLoading(false);
         }
-        /* 
-        POST req to /api/decks/syllabus with body:
-        {
-            "description": "...",
-            "keywords": ["", "", ""],
-            "difficulty": "medium"
-        }
-        */
     }
 
     const handleCreateSubmit = async (event) => {
@@ -128,7 +138,6 @@ export default function DeckCreate({ children }) {
             const data = response.json();
 
             if (data.ok) {
-                console.log('Redirecting')
                 setCreated(true);
             }
 
@@ -219,16 +228,24 @@ export default function DeckCreate({ children }) {
         ), 
         'Preview': (
             <div className="flex flex-col gap-12 py-12">
-                <InfoCard>
+                {/* <InfoCard>
                     <p>The following is a brief overview of how the deck will be structured, <span className="text-accent font-medium">review the different topics and subtopics to be covered, and then accept or discard the deck</span>.</p>
-                </InfoCard>
+                </InfoCard> */}
                 <div>
                     {loading ? (
-                        <div className="flex justify-center items-center p-12">
-                            <p>Loading preview...</p>
+                        <div className="flex flex-col items-center gap-4">
+                            <LoaderCircle size={24} className='text-accent animate-spin' />
+                            <p className="font-normal text-sm text-center text-text-secondary-light dark:text-text-secondary-dark">
+                                Creating deck preview, it can take a up to a few minutes.
+                                <br />
+                                {Math.floor(elapsedTime / 600)}:{String(Math.floor((elapsedTime % 600) / 10)).padStart(2, '0')}.{String(elapsedTime % 10)}
+                            </p>
                         </div>
                     ) : previewData ? (
-                        <div className="">
+                        <div className="flex flex-col gap-8">
+                            <InfoCard>
+                                <p>The following is a brief overview of how the deck will be structured, <span className="text-accent font-medium">review the different topics and subtopics to be covered, and then accept or discard the deck</span>.</p>
+                            </InfoCard>
                             <DeckHeader
                                 title={previewData.preview.content.title || '🌐 Deck Title'}
                                 description={previewData.preview.content.explanation || 'Description'}
