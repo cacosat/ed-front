@@ -236,7 +236,7 @@ export default function DeckCreate({ children }) {
                         <div className="flex flex-col items-center gap-4">
                             <LoaderCircle size={24} className='text-accent animate-spin' />
                             <p className="font-normal text-sm text-center text-text-secondary-light dark:text-text-secondary-dark">
-                                Creating deck preview, it can take a up to a few minutes.
+                                Creating deck preview, it can take up to a few minutes.
                                 <br />
                                 {Math.floor(elapsedTime / 600)}:{String(Math.floor((elapsedTime % 600) / 10)).padStart(2, '0')}.{String(elapsedTime % 10)}
                             </p>
