@@ -25,17 +25,17 @@ export default function DeckList({props, children}){
 export function DeckListEntry({ deckInfo }){
     // Prop deck info should contain: title, description, tags.
     const numOfQuestions = 10;
-    const numOfModules = deckInfo.deck_content.content.modules.length;
+    const numOfModules = deckInfo.completed_modules;
 
     return (
         <div className="flex justify-between items-center px-4 py-8 gap-16 border-b border-divider-light dark:border-divider-dark">
             {/* General Container */}
             <div className="flex flex-col gap-3">
                 <p className="font-medium text-base text-text-primary-light dark:text-text-primary-dark">
-                    {deckInfo.deck_content.title}
+                    {deckInfo.title}
                 </p>
                 <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                    {deckInfo.deck_content.description}
+                    {deckInfo.description}
                 </p>
                 {/* <div className="flex gap-2">
                     <Badge variant="outline" className='w-fit text-xxs font-normal'>Tag</Badge>
