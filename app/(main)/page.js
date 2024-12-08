@@ -17,7 +17,8 @@ import { DeckList, DeckListEntry } from "../components/DeckList";
 import {
   useContext,
   useEffect,
-  useState
+  useState,
+  useMemo
 } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 
@@ -49,6 +50,69 @@ export default function Home() {
     fetchUserDecks();
   }, [authFetch])
 
+  const groupedDecks = useMemo(() => {
+    const sorted = decks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    return {
+      generating: sorted.filter((deck) => deck.status === 'generating'),
+      preview: sorted.filter((deck) => deck.status === 'preview'),
+      complete: sorted.filter((deck) => deck.status === 'complete')
+    }
+  }, [decks]);
+
+  useEffect(() => {
+    console.log('All Decks:', decks);
+    console.log('Generating Decks:', groupedDecks.generating);
+    console.log('Preview Decks:', groupedDecks.preview);
+    console.log('Complete Decks:', groupedDecks.complete);
+  }, [decks, groupedDecks]);
+
+  const renderDeckList = () => {
+    if (decks.length === 0) {
+      return loading ? ( 
+        <div className="flex flex-col items-center justify-center h-[50vh]">
+          <div className="flex flex-col items-center gap-4">
+            <LoaderCircle size={24} className='text-accent animate-spin' />
+            <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+              Loading Decks...
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-[50vh]">
+          <div className="flex flex-col items-center gap-4">
+            <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
+              No decks available, create a new deck to start.
+            </p>
+            <Link href={'/deck/create'}>
+              <CustomButton>
+                New Deck
+              </CustomButton>
+            </Link>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        {groupedDecks.generating.length > 0 && (
+          <div>
+            {groupedDecks.generating.map((deck) => (
+              <DeckListEntry key={deck.id} deckInfo={deck} status={deck.status} />
+            ))}
+          </div>
+        )}
+        {groupedDecks.complete.length > 0 && (
+          <div>
+            {groupedDecks.complete.map((deck) => (
+              <DeckListEntry key={deck.id} deckInfo={deck} />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <main className="flex flex-col gap-12">
@@ -59,10 +123,30 @@ export default function Home() {
         </div>
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
-          {decks.length !== 0 ? ( 
-            decks.filter((deck) => deck.status === 'complete').map((deck) => {
-              return <DeckListEntry key={deck.id} deckInfo={deck} />
-            })
+          {renderDeckList()}
+          {/* {decks.length !== 0 ? ( 
+            <div>
+              <div>
+                {
+                  decks
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // sorts newest to oldest, descending
+                  .filter((deck) => deck.status === 'generating')
+                  .map((deck) => {
+                    return <DeckListEntry key={deck.id} deckInfo={deck} status={deck.status} />
+                  })
+                }
+              </div>
+              <div>
+                {
+                  decks
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // sorts newest to oldest, descending
+                  .filter((deck) => deck.status === 'complete')
+                  .map((deck) => {
+                    return <DeckListEntry key={deck.id} deckInfo={deck} />
+                  })
+                }
+              </div>
+            </div>
           ) : (
             <div>
               {loading ? ( 
@@ -89,7 +173,7 @@ export default function Home() {
                 </div>
               )}
             </div>
-          )}
+          )} */}
 
         </section>
       </section>
