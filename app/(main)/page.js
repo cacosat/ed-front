@@ -60,13 +60,6 @@ export default function Home() {
     }
   }, [decks]);
 
-  useEffect(() => {
-    console.log('All Decks:', decks);
-    console.log('Generating Decks:', groupedDecks.generating);
-    console.log('Preview Decks:', groupedDecks.preview);
-    console.log('Complete Decks:', groupedDecks.complete);
-  }, [decks, groupedDecks]);
-
   const renderDeckList = () => {
     if (decks.length === 0) {
       return loading ? ( 

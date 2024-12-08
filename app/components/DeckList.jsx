@@ -72,7 +72,7 @@ export function DeckListEntry({ deckInfo, status = 'complete' }){
                         {/* button container */}
                         <div className="flex gap-2">
                             <CustomButton 
-                                variant="soft"
+                                variant="softError"
                                 frontIcon={<Trash2 size={16} strokeWidth={2} />}
                                 text={false}
                             >

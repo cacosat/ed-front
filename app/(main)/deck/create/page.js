@@ -32,12 +32,6 @@ export default function DeckCreate({ children }) {
     const router = useRouter();
 
     useEffect(() => {
-        if (created) {
-            router.push('/')
-        }
-    }, [created])
-
-    useEffect(() => {
         // handle loading timer
         let intervalId;
         if (loading === true) {
@@ -142,6 +136,7 @@ export default function DeckCreate({ children }) {
             }
 
             alert("Deck created succesfully, now you'll be redirected to the home page.")
+            router.push('/');
         } catch (error) {
             console.error('Failed request to create deck from frontend: ', error)
         }
