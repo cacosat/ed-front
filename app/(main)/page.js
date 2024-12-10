@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LoaderCircle, Play, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../components/CustomButton";
+import Footer from "../components/Footer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -117,62 +118,9 @@ export default function Home() {
         <section className="border-t border-divider-light dark:border-divider-dark">
           {/* Deck library */}
           {renderDeckList()}
-          {/* {decks.length !== 0 ? ( 
-            <div>
-              <div>
-                {
-                  decks
-                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // sorts newest to oldest, descending
-                  .filter((deck) => deck.status === 'generating')
-                  .map((deck) => {
-                    return <DeckListEntry key={deck.id} deckInfo={deck} status={deck.status} />
-                  })
-                }
-              </div>
-              <div>
-                {
-                  decks
-                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // sorts newest to oldest, descending
-                  .filter((deck) => deck.status === 'complete')
-                  .map((deck) => {
-                    return <DeckListEntry key={deck.id} deckInfo={deck} />
-                  })
-                }
-              </div>
-            </div>
-          ) : (
-            <div>
-              {loading ? ( 
-                <div className="flex flex-col items-center justify-center h-[50vh]">
-                  <div className="flex flex-col items-center gap-4">
-                    <LoaderCircle size={24} className='text-accent animate-spin' />
-                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                      Loading Decks...
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-[50vh]">
-                  <div className="flex flex-col items-center gap-4">
-                    <p className="font-normal text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                      No decks available, create a new deck to start.
-                    </p>
-                    <Link href={'/deck/create'}>
-                      <CustomButton>
-                        New Deck
-                      </CustomButton>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          )} */}
-
         </section>
       </section>
-      <footer className="flex items-center justify-center">
-        <p>Footer</p>
-      </footer>
+      <Footer />
     </main>
   );
 }

@@ -86,12 +86,15 @@ export function DeckListEntry({ deckInfo, status = 'complete' }){
                                 </CustomButton>
                             </Link>
                         </div>
-                        <CustomButton 
-                            variant={'solid'} 
-                            frontIcon={<Play size={16} strokeWidth={2} />}
-                        >
-                            Test
-                        </CustomButton>
+                        <Link href={`/deck/${deckInfo.id}/play`}>
+                            <CustomButton
+                                className={'w-full'}
+                                variant={'solid'}
+                                frontIcon={<Play size={16} strokeWidth={2} />}
+                            >
+                                Test
+                            </CustomButton>
+                        </Link>
                     </div>
                 </div>
             )}
