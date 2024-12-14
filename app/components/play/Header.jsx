@@ -16,7 +16,7 @@ export default function Header({ title }) {
                 />
                 <p className="text-xl font-medium">{title}</p>
             </div>
-            <div className="flex gap-[2px] items-center text-text-secondary-light dark:text-text-secondary-dark">
+            <div className="px-4 flex gap-[2px] items-center text-text-secondary-light dark:text-text-secondary-dark">
                 <FileQuestion className="" size={16} strokeWidth={2} />
                 {10}
             </div>
