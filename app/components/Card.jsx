@@ -7,6 +7,42 @@ import {
  } from "lucide-react";
 import CustomButton from "./CustomButton";
 
+export function BaseCard({ className, children }){
+
+    return (
+        <div className={`p-4 bg-background-card-light dark:bg-background-card-dark 
+        text-text-primary-light dark:text-text-primary-dark dark:text-text-primary-second 
+        rounded-lg 
+        border border-stroke-light-light dark:border-stroke-dark-light
+        ${className}`}>
+            {children}
+        </div>
+    )
+}
+
+export function PlayAnswerCard({
+    params, 
+    className,
+    state = 'neutral', // can be neutral, correct and error
+    showExplanation = false,
+    answer,
+    explanation
+}) {
+
+    return (
+        <BaseCard className={`w-full ${state === 'correct' ? '!border-accent' : ''}`}>
+            <div className="flex flex-col gap-4">
+                Answer
+                {showExplanation ? (
+                    <div className="text-text-secondary-light dark:text-text-secondary-dark font-light p-4 border-l-2 border-accent bg-background-accent-soft rounded-r-lg">
+                        <p><span className="font-medium text-accent">Explanation: </span>{explanation}</p>
+                    </div>
+                ) : (null)}
+            </div>
+        </BaseCard>
+    )
+}
+
 export function AnswerCard({
     extraClasses = '',
     type,
@@ -60,19 +96,6 @@ export function AnswerCard({
                     </CustomButton>
                 </div>
             </div>
-        </div>
-    )
-}
-
-export function BaseCard({ className, children }){
-
-    return (
-        <div className={`p-4 bg-background-card-light dark:bg-background-card-dark 
-        text-text-primary-light dark:text-text-primary-dark dark:text-text-primary-second 
-        rounded-lg 
-        border border-stroke-light-light dark:border-stroke-dark-light
-        ${className}`}>
-            {children}
         </div>
     )
 }
