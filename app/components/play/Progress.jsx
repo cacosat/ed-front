@@ -10,8 +10,8 @@ export default function Progress({ params, state }) {
         */
 
         <div className="flex gap-4">
-            {state.map((item) => (
-                <div className={`w-full flex justify-between rounded-full ${item === 1 ? 'bg-accent' : 'bg-background-accent-soft'}  w-[50px] h-[8px]`} />
+            {state.map((item, index) => ( // change key = index to property from deck
+                <div key={index} className={`w-full flex justify-between rounded-full ${item === 1 ? 'bg-accent' : 'bg-background-accent-soft'}  w-[50px] h-[8px]`} />
             ))}
         </div>
     )
