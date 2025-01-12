@@ -5,7 +5,7 @@ import {
     FileQuestion
 } from "lucide-react"
 
-export default function Header({ title }) {
+export default function Header({ title, numOfQuestions = 'X' }) {
 
     return (
         <div className="flex items-center justify-between">
@@ -18,7 +18,7 @@ export default function Header({ title }) {
             </div>
             <div className="px-4 flex gap-[2px] items-center text-text-secondary-light dark:text-text-secondary-dark">
                 <FileQuestion className="" size={16} strokeWidth={2} />
-                {10}
+                {numOfQuestions}
             </div>
         </div>
     )
