@@ -31,8 +31,52 @@ export default function Play({ params }) {
                 
                 const deckInfo = await response.json();
                 setDeckInfo(deckInfo);
+                setDeckContent(deckInfo.modules);
                 setNumOfQuestions(deckInfo.deckInfo.total_questions)
                 console.log(`retrieved deck succesfully, with ${numOfQuestions} questions deck.deckInfo is: `, deckInfo.deckInfo)
+                
+                // Aggregate all questions
+                const allQuestions = deckInfo.modules.flatMap(module => 
+                    module.content.subtopics.flatMap(subtopic => {
+                        const questions = [];
+                        
+                        // Add MCQ questions
+                        if (subtopic.questions.mcq) {
+                            questions.push(...subtopic.questions.mcq.map(q => ({
+                                ...q,
+                                moduleTitle: module.title,
+                                subtopicTitle: subtopic.title,
+                                questionType: 'mcq'
+                            })));
+                        }
+                        
+                        // Add True/False questions
+                        if (subtopic.questions['true/false']) {
+                            questions.push(...subtopic.questions['true/false'].map(q => ({
+                                ...q,
+                                moduleTitle: module.title,
+                                subtopicTitle: subtopic.title,
+                                questionType: 'true/false'
+                            })));
+                        }
+                        
+                        // Add Text questions
+                        if (subtopic.questions.text) {
+                            questions.push(...subtopic.questions.text.map(q => ({
+                                ...q,
+                                moduleTitle: module.title,
+                                subtopicTitle: subtopic.title,
+                                questionType: 'text'
+                            })));
+                        }
+                        
+                        return questions;
+                    })
+                );
+                
+                setQuestions(allQuestions);
+                console.log('All questions:', allQuestions);
+                
             } catch (error) {
                 console.error(`Failed fetching deck ${deckId} with error: `, error)
             } finally {
